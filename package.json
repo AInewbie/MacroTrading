@@ -1,13 +1,13 @@
 {
   "name": "macrotrading-workbench",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "description": "Risk-first multi-asset portfolio construction and paper execution workbench.",
   "scripts": {
     "start": "node server.mjs",
     "test": "node --test",
-    "check": "node --check server.mjs && node --check public/app.js && node --check src/domain/workspace.js && node --check src/domain/reconciliation.js"
+    "check": "node --check server.mjs && node --check public/app.js && node --check src/domain/workspace.js && node --check src/domain/reconciliation.js && node --check src/domain/themes.js && node --check src/engine/themes.js && node --check src/adapters/themeAI.js && node --check src/ui/themeView.js"
   },
   "engines": { "node": ">=22.13" }
 }

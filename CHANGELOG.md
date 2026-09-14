@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0 — AI-assisted theme research
+
+- Normalize synthetic news, blog, macro, financial, alternative and catalyst evidence with provenance and timestamps.
+- Add deterministic, configurable theme scoring for reliability, freshness, novelty, source breadth and catalysts.
+- Add a strict AI structured-output request contract with cited evidence, uncertainty, catalysts and invalidation.
+- Map candidate themes to bounded trade expressions from the validated instrument universe.
+- Add a responsive Theme lab and preserve research state in schema-versioned workspace exports.
+- Keep AI providers, external sources, signals, orders and live execution disconnected by design.
+
 ## 0.3.0 — read-only broker reconciliation
 
 - Import and validate a bounded broker-neutral account snapshot without network access or credentials.

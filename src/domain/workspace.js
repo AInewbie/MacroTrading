@@ -1,9 +1,10 @@
 import { ASSET_CLASSES, validateInstrument } from './instruments.js';
 import { ORDER_SIDES, ORDER_TYPES } from './orders.js';
 import { normaliseBrokerSnapshot } from './reconciliation.js';
+import { normaliseThemeResearch } from './themes.js';
 
 export const WORKSPACE_FORMAT = 'macrotrading-workspace';
-export const WORKSPACE_SCHEMA_VERSION = 1;
+export const WORKSPACE_SCHEMA_VERSION = 2;
 export const MAX_WORKSPACE_FILE_BYTES = 2_000_000;
 
 const limits = Object.freeze({ instruments:500, positions:2_000, orders:5_000, audit:10_000 });
@@ -172,6 +173,7 @@ export function validateWorkspaceState(value, { imported=false }={}) {
     orders:array(source.orders ?? [], 'orders', limits.orders).map((item, index) => normaliseOrder(item, index, instrumentMap, imported)),
     audit:array(source.audit ?? [], 'audit trail', limits.audit).map(normaliseAudit),
     reconciliation:source.reconciliation == null ? null : normaliseBrokerSnapshot(source.reconciliation),
+    themeResearch:normaliseThemeResearch(source.themeResearch, instruments),
   };
   return state;
 }
@@ -192,7 +194,7 @@ export function parseWorkspaceDocument(input) {
   catch { fail('the file is not valid JSON.'); }
   object(document, 'document');
   if (document.format !== WORKSPACE_FORMAT) fail(`expected format ${WORKSPACE_FORMAT}.`);
-  if (document.schemaVersion !== WORKSPACE_SCHEMA_VERSION) fail(`schema version ${document.schemaVersion ?? 'missing'} is not supported.`);
+  if (![1, WORKSPACE_SCHEMA_VERSION].includes(document.schemaVersion)) fail(`schema version ${document.schemaVersion ?? 'missing'} is not supported.`);
   if (document.executionMode !== 'paper-only') fail('execution mode must be paper-only.');
   const state = validateWorkspaceState(document.workspace, { imported:true });
   const demoted = state.orders.filter((order) => order.status === 'Imported').length;

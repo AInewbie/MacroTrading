@@ -1,4 +1,4 @@
-import { demoBrokerSnapshot, demoInstruments, demoPortfolio, defaultPolicy, demoScenarios } from '../src/data/demo.js';
+import { demoBrokerSnapshot, demoInstruments, demoPortfolio, defaultPolicy, demoScenarios, demoThemeEvidence, demoThemeDefinitions, defaultThemeSettings } from '../src/data/demo.js';
 import { instrumentLabel, validateInstrument } from '../src/domain/instruments.js';
 import { createOrder } from '../src/domain/orders.js';
 import { analysePortfolio, rebalanceOrders } from '../src/engine/portfolio.js';
@@ -6,10 +6,13 @@ import { preTradeChecks, stressPortfolio } from '../src/engine/risk.js';
 import { PaperBroker } from '../src/adapters/paperBroker.js';
 import { createWorkspaceDocument, MAX_WORKSPACE_FILE_BYTES, parseWorkspaceDocument, validateWorkspaceState } from '../src/domain/workspace.js';
 import { MAX_BROKER_SNAPSHOT_BYTES, maskAccountId, parseBrokerSnapshot, reconcilePortfolio } from '../src/domain/reconciliation.js';
+import { detectThemes } from '../src/engine/themes.js';
+import { normaliseThemeSettings } from '../src/domain/themes.js';
+import { renderEvidenceDetail, renderThemeLab } from '../src/ui/themeView.js';
 
 const STORAGE_KEY = 'macrotrading.workspace.v1';
 const views = [
-  ['overview','Overview'],['positions','Positions'],['reconciliation','Broker reconciliation'],['universe','Instrument universe'],
+  ['overview','Overview'],['themes','Theme lab'],['positions','Positions'],['reconciliation','Broker reconciliation'],['universe','Instrument universe'],
   ['risk','Risk & scenarios'],['orders','Orders'],['controls','Execution controls'],['audit','Audit trail'],
 ];
 const money = new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
@@ -22,7 +25,7 @@ let state = load();
 let currentView = location.hash.slice(1) || 'overview';
 const broker = new PaperBroker();
 
-function freshState(){return {portfolio:deepCopy(demoPortfolio),instruments:deepCopy(demoInstruments),policy:deepCopy(defaultPolicy),orders:[],audit:[{at:new Date().toISOString(),event:'Workspace initialized',detail:'Synthetic data · paper execution only',actor:'System'}],reconciliation:null};}
+function freshState(){return {portfolio:deepCopy(demoPortfolio),instruments:deepCopy(demoInstruments),policy:deepCopy(defaultPolicy),orders:[],audit:[{at:new Date().toISOString(),event:'Workspace initialized',detail:'Synthetic data · paper execution only',actor:'System'}],reconciliation:null,themeResearch:{evidence:deepCopy(demoThemeEvidence),themes:[],settings:deepCopy(defaultThemeSettings),lastRun:null}};}
 function load(){try{const stored=JSON.parse(localStorage.getItem(STORAGE_KEY));return stored?validateWorkspaceState(stored):freshState();}catch{return freshState();}}
 function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
 function audit(event,detail,actor='User'){state.audit.unshift({at:new Date().toISOString(),event,detail,actor});}
@@ -42,6 +45,7 @@ function exposureBars(a){const max=Math.max(...Object.values(a.byClass).map(Math
 
 function renderOverview(){const a=analysis();return `${metrics(a)}<div class="layout"><article class="card"><div class="card-head"><div><h2>Current positions</h2><p>Cross-asset positions normalized to USD risk views.</p></div><button class="button ghost" data-ticket>New order</button></div>${positionsTable(a.rows,true)}</article><article class="card"><div class="card-head"><div><h2>Delta exposure</h2><p>Net by requested asset class.</p></div></div>${exposureBars(a)}</article></div>`;}
 function renderPositions(){const a=analysis();return `<div class="section-head"><div><h2>${state.portfolio.name}</h2><p>${a.rows.length} positions · ${state.portfolio.baseCurrency} reporting currency</p></div><button class="button primary" data-ticket>New order</button></div><article class="card">${positionsTable(a.rows)}</article>`;}
+function renderThemes(){return renderThemeLab({research:state.themeResearch,instruments:state.instruments,escapeHtml,number});}
 function renderReconciliation(){
   if(!state.reconciliation)return `<div class="section-head"><div><h2>Broker reconciliation</h2><p>Compare a read-only account snapshot with the local portfolio. No holdings or orders will be changed.</p></div></div><article class="card empty-state"><span class="asset-badge">Local · read only</span><h2>No broker snapshot loaded</h2><p>Import a broker-neutral JSON snapshot or load the synthetic example to inspect the workflow safely.</p><div class="actions"><button class="button primary" data-import-broker>Import snapshot</button><button class="button ghost" data-demo-broker>Load synthetic snapshot</button></div><p class="safety-note">Files are processed in this browser. Credentials, API keys and live account connections are not supported.</p></article>`;
   const result=reconcilePortfolio(state.portfolio,state.instruments,state.reconciliation), account=result.snapshot.account;
@@ -53,8 +57,30 @@ function renderOrders(){return `<div class="section-head"><div><h2>Staged and fi
 function renderControls(){const p=state.policy;return `<div class="section-head"><div><h2>Execution controls</h2><p>Version 1 · enforced before staging and again before submission.</p></div></div><div class="layout"><article class="card"><div class="card-head"><div><h2>Portfolio limits</h2><p>Local policy values for this prototype.</p></div></div><div class="policy-list">${[['Maximum order notional',money.format(p.maxOrderNotional)],['Maximum gross exposure',money.format(p.maxGrossExposure)],['Maximum net exposure',money.format(p.maxNetExposure)],['Option contract limit',number.format(p.maxOptionContracts)],['Commodity contract limit',number.format(p.maxCommodityContracts)],['Options limit-order rule',p.requireLimitForOptions?'Required':'Not required']].map(([a,b])=>`<div class="policy-item"><span>${a}</span><b>${b}</b></div>`).join('')}</div></article><article class="card"><div class="card-head"><div><h2>Broker routes</h2><p>Live routes are intentionally unavailable.</p></div></div><div class="policy-list"><div class="policy-item"><span>Paper broker</span><b class="positive">Enabled</b></div><div class="policy-item"><span>IBKR</span><b class="negative">Not configured</b></div><div class="policy-item"><span>Alpaca</span><b class="negative">Not configured</b></div><div class="policy-item"><span>Live order submission</span><b class="negative">Disabled</b></div></div></article></div><article class="card workspace-card"><div class="card-head"><div><h2>Workspace portability</h2><p>Download or restore a schema-versioned JSON snapshot. Imports are validated before this browser is changed.</p></div><span class="asset-badge">Paper only</span></div><div class="actions"><button class="button primary" data-export-workspace>Export workspace</button><button class="button ghost" data-import-workspace>Import workspace</button></div><p class="safety-note">Imported unfilled orders require fresh staging and controls; they cannot be submitted directly. No credentials are included.</p></article>`;}
 function renderAudit(){return `<div class="section-head"><div><h2>Audit trail</h2><p>Local append-only activity view for the current workspace.</p></div></div><article class="card">${state.audit.map(row=>`<div class="audit-row"><span>${new Date(row.at).toLocaleString()}</span><div><b>${escapeHtml(row.event)}</b><p>${escapeHtml(row.detail)}</p></div><span>${escapeHtml(row.actor)}</span></div>`).join('')}</article>`;}
 
-const renderers={overview:renderOverview,positions:renderPositions,reconciliation:renderReconciliation,universe:renderUniverse,risk:renderRisk,orders:renderOrders,controls:renderControls,audit:renderAudit};
-function render(){if(!renderers[currentView])currentView='overview';renderNav();document.querySelector('#page-title').textContent=views.find(([id])=>id===currentView)?.[1]||'Portfolio overview';document.querySelector('#app').innerHTML=renderers[currentView]();document.querySelectorAll('[data-ticket]').forEach(button=>button.addEventListener('click',()=>openTicket(button.dataset.ticket)));document.querySelectorAll('[data-submit]').forEach(button=>button.addEventListener('click',()=>submitOrder(button.dataset.submit)));document.querySelector('[data-export-workspace]')?.addEventListener('click',exportWorkspace);document.querySelector('[data-import-workspace]')?.addEventListener('click',()=>document.querySelector('#workspace-file').click());document.querySelector('[data-import-broker]')?.addEventListener('click',()=>document.querySelector('#broker-snapshot-file').click());document.querySelector('[data-demo-broker]')?.addEventListener('click',loadDemoBrokerSnapshot);document.querySelector('[data-clear-broker]')?.addEventListener('click',clearBrokerSnapshot);}
+const renderers={overview:renderOverview,themes:renderThemes,positions:renderPositions,reconciliation:renderReconciliation,universe:renderUniverse,risk:renderRisk,orders:renderOrders,controls:renderControls,audit:renderAudit};
+function render(){if(!renderers[currentView])currentView='overview';renderNav();document.querySelector('#page-title').textContent=views.find(([id])=>id===currentView)?.[1]||'Portfolio overview';document.querySelector('#app').innerHTML=renderers[currentView]();document.querySelectorAll('[data-ticket]').forEach(button=>button.addEventListener('click',()=>openTicket(button.dataset.ticket)));document.querySelectorAll('[data-submit]').forEach(button=>button.addEventListener('click',()=>submitOrder(button.dataset.submit)));document.querySelector('[data-export-workspace]')?.addEventListener('click',exportWorkspace);document.querySelector('[data-import-workspace]')?.addEventListener('click',()=>document.querySelector('#workspace-file').click());document.querySelector('[data-import-broker]')?.addEventListener('click',()=>document.querySelector('#broker-snapshot-file').click());document.querySelector('[data-demo-broker]')?.addEventListener('click',loadDemoBrokerSnapshot);document.querySelector('[data-clear-broker]')?.addEventListener('click',clearBrokerSnapshot);document.querySelector('[data-run-themes]')?.addEventListener('click',runThemeDetection);document.querySelector('#theme-settings-form')?.addEventListener('submit',saveThemeSettings);document.querySelectorAll('[data-evidence]').forEach(button=>button.addEventListener('click',()=>openEvidence(button.dataset.evidence)));}
+
+function runThemeDetection(){
+  const now=new Date();
+  state.themeResearch.themes=detectThemes(state.themeResearch.evidence,demoThemeDefinitions,state.instruments,state.themeResearch.settings,now);
+  state.themeResearch.lastRun=now.toISOString();
+  audit('Theme research refreshed',`${state.themeResearch.themes.length} candidates · ${state.themeResearch.evidence.length} synthetic evidence records`,'Theme engine');
+  save();render();notify('Synthetic theme candidates refreshed. No order or target was created.');
+}
+function saveThemeSettings(event){
+  event.preventDefault();
+  const data=new FormData(event.currentTarget);
+  try{
+    state.themeResearch.settings=normaliseThemeSettings({halfLifeDays:Number(data.get('halfLifeDays')),minimumSources:Number(data.get('minimumSources')),weights:{reliability:Number(data.get('weight-reliability')),freshness:Number(data.get('weight-freshness')),novelty:Number(data.get('weight-novelty')),breadth:Number(data.get('weight-breadth')),catalyst:Number(data.get('weight-catalyst'))}});
+    audit('Theme scoring policy changed',`Half-life ${state.themeResearch.settings.halfLifeDays} days · minimum ${state.themeResearch.settings.minimumSources} sources`);
+    save();render();notify('Theme scoring policy saved. Re-run detection to refresh scores.');
+  }catch(error){notify(error.message,true);}
+}
+function openEvidence(id){
+  const item=state.themeResearch.evidence.find((evidence)=>evidence.id===id);
+  document.querySelector('#evidence-content').innerHTML=renderEvidenceDetail(item,escapeHtml,number);
+  document.querySelector('#evidence-dialog').showModal();
+}
 
 function exportWorkspace(){
   const payload=createWorkspaceDocument(state), blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}), url=URL.createObjectURL(blob), link=document.createElement('a');

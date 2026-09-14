@@ -8,6 +8,7 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/reconciliation.css">
+  <link rel="stylesheet" href="/themes.css">
 </head>
 <body>
   <div class="app-shell">
@@ -35,6 +36,9 @@
       <div id="ticket-preview" class="ticket-preview"></div>
       <div class="dialog-actions"><button value="cancel" class="button ghost">Cancel</button><button id="add-order" value="default" class="button primary">Run checks & stage</button></div>
     </form>
+  </dialog>
+  <dialog id="evidence-dialog">
+    <form method="dialog"><div class="dialog-head"><div><p class="eyebrow">SOURCE EVIDENCE</p><h2>Evidence record</h2></div><button value="close" class="icon-button" aria-label="Close">×</button></div><div id="evidence-content"></div><div class="dialog-actions"><button value="close" class="button ghost">Close</button></div></form>
   </dialog>
   <input id="workspace-file" type="file" accept=".json,application/json" hidden>
   <input id="broker-snapshot-file" type="file" accept=".json,application/json" hidden>

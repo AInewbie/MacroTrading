@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { demoBrokerSnapshot, demoInstruments, demoPortfolio, defaultPolicy, demoScenarios } from '../src/data/demo.js';
+import { demoBrokerSnapshot, demoInstruments, demoPortfolio, defaultPolicy, demoScenarios, demoThemeEvidence, demoThemeDefinitions, defaultThemeSettings } from '../src/data/demo.js';
 import { analysePortfolio, positionMetrics, rebalanceOrders } from '../src/engine/portfolio.js';
 import { preTradeChecks, stressPortfolio } from '../src/engine/risk.js';
 import { validateInstrument } from '../src/domain/instruments.js';
@@ -8,12 +8,15 @@ import { createOrder } from '../src/domain/orders.js';
 import { PaperBroker, LiveBrokerDisabled } from '../src/adapters/paperBroker.js';
 import { createWorkspaceDocument, parseWorkspaceDocument } from '../src/domain/workspace.js';
 import { maskAccountId, parseBrokerSnapshot, reconcilePortfolio } from '../src/domain/reconciliation.js';
+import { detectThemes, evidenceFreshness, scoreThemeEvidence } from '../src/engine/themes.js';
+import { createThemeDetectionRequest, AIThemeDetectorDisabled } from '../src/adapters/themeAI.js';
 
 function workspaceState(overrides={}) {
   return {
     portfolio:structuredClone(demoPortfolio), instruments:structuredClone(demoInstruments),
     policy:structuredClone(defaultPolicy), orders:[],
     audit:[{ at:'2026-09-14T00:00:00.000Z', event:'Test workspace', detail:'Synthetic fixture', actor:'Test' }], reconciliation:null,
+    themeResearch:{ evidence:structuredClone(demoThemeEvidence), themes:[], settings:structuredClone(defaultThemeSettings), lastRun:null },
     ...overrides,
   };
 }
@@ -78,7 +81,7 @@ test('workspace export round-trips the normalized multi-asset state', () => {
   const original = workspaceState();
   const document = createWorkspaceDocument(original, new Date('2026-09-14T10:00:00.000Z'));
   const restored = parseWorkspaceDocument(JSON.stringify(document));
-  assert.equal(document.schemaVersion, 1);
+  assert.equal(document.schemaVersion, 2);
   assert.equal(document.executionMode, 'paper-only');
   assert.deepEqual(restored.state.portfolio, original.portfolio);
   assert.deepEqual(restored.state.instruments, original.instruments);
@@ -98,7 +101,7 @@ test('workspace import demotes unfilled orders so they cannot be submitted', () 
 
 test('workspace import rejects unsupported versions and broken position references', () => {
   const document = createWorkspaceDocument(workspaceState(), new Date('2026-09-14T10:00:00.000Z'));
-  assert.throws(() => parseWorkspaceDocument({ ...document, schemaVersion:2 }), /schema version 2 is not supported/);
+  assert.throws(() => parseWorkspaceDocument({ ...document, schemaVersion:3 }), /schema version 3 is not supported/);
   document.workspace.portfolio.positions[0].instrumentId = 'missing-instrument';
   assert.throws(() => parseWorkspaceDocument(document), /references missing instrument/);
 });
@@ -132,4 +135,46 @@ test('read-only reconciliation does not mutate portfolio or create orders and su
   assert.deepEqual(state.orders, []);
   const restored = parseWorkspaceDocument(createWorkspaceDocument(state));
   assert.deepEqual(restored.state.reconciliation, parseBrokerSnapshot(demoBrokerSnapshot));
+});
+
+test('theme scoring is deterministic, bounded and decays with evidence age', () => {
+  const now = new Date('2026-09-14T12:00:00.000Z');
+  assert.equal(evidenceFreshness('2026-08-24T12:00:00.000Z', now, 21), 0.5);
+  const subset = demoThemeEvidence.filter((item) => item.themes.includes('policy-divergence'));
+  const first = scoreThemeEvidence(subset, defaultThemeSettings, now);
+  assert.deepEqual(first, scoreThemeEvidence(subset, defaultThemeSettings, now));
+  assert.ok(first.score >= 0 && first.score <= 100);
+  assert.ok(first.confidence >= 0 && first.confidence <= 1);
+});
+
+test('theme detector retains evidence, catalysts, invalidation and mapped instruments', () => {
+  const themes = detectThemes(demoThemeEvidence, demoThemeDefinitions, demoInstruments, defaultThemeSettings, new Date('2026-09-14T12:00:00.000Z'));
+  assert.equal(themes.length, 3);
+  assert.ok(themes.every((theme) => theme.evidenceIds.length >= 2));
+  assert.ok(themes.every((theme) => theme.catalysts.length && theme.invalidation.length));
+  assert.ok(themes.flatMap((theme) => theme.expressions).every((expression) => demoInstruments.some((item) => item.id === expression.instrumentId)));
+  assert.equal(themes.some((theme) => 'orders' in theme || 'quantity' in theme || 'targetWeight' in theme), false);
+});
+
+test('AI request uses a strict evidence-cited schema and cannot request trades', () => {
+  const request = createThemeDetectionRequest({ evidence:demoThemeEvidence, instruments:demoInstruments, model:'test-model' });
+  assert.equal(request.text.format.strict, true);
+  assert.equal(request.text.format.schema.additionalProperties, false);
+  assert.match(request.instructions, /Cite evidence_id/);
+  assert.match(request.instructions, /Do not generate orders/);
+  assert.equal(request.input.includes('averagePrice'), false);
+});
+
+test('unconfigured AI adapter fails closed without a network call', async () => {
+  await assert.rejects(() => new AIThemeDetectorDisabled().detect(), /not configured/);
+});
+
+test('theme research survives workspace export while v1 imports migrate safely', () => {
+  const document = createWorkspaceDocument(workspaceState(), new Date('2026-09-14T12:00:00.000Z'));
+  assert.equal(parseWorkspaceDocument(document).state.themeResearch.evidence.length, demoThemeEvidence.length);
+  document.schemaVersion = 1;
+  delete document.workspace.themeResearch;
+  const migrated = parseWorkspaceDocument(document);
+  assert.deepEqual(migrated.state.themeResearch.themes, []);
+  assert.deepEqual(migrated.state.themeResearch.evidence, []);
 });
