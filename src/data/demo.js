@@ -54,3 +54,42 @@ export const demoBrokerSnapshot = {
     { instrumentId:'broker-only-vix', brokerSymbol:'VX', quantity:3 },
   ],
 };
+
+export const demoThemeEvidence = [
+  { id:'ev-cpi', title:'Core inflation trend cools across recent observations', sourceName:'Synthetic macro release', sourceType:'Macro data', observedAt:'2026-09-12T12:30:00.000Z', reliability:0.94, novelty:0.54, summary:'A synthetic inflation series shows sequential core price pressure easing while services remain sticky.' },
+  { id:'ev-yields', title:'Duration demand rises in institutional flow proxy', sourceName:'Synthetic alternative flow monitor', sourceType:'Alternative data', observedAt:'2026-09-13T16:00:00.000Z', reliability:0.72, novelty:0.81, summary:'A synthetic custody-flow proxy records broadening demand for long-duration government bonds.' },
+  { id:'ev-fed', title:'Policy meeting and projections approach', sourceName:'Synthetic catalyst calendar', sourceType:'Catalyst', observedAt:'2026-09-14T08:00:00.000Z', reliability:0.98, novelty:0.40, summary:'A scheduled synthetic central-bank decision could validate or invalidate the duration thesis.' },
+  { id:'ev-wages', title:'Wage tracker remains above comfort range', sourceName:'Synthetic research brief', sourceType:'Research', observedAt:'2026-09-11T10:00:00.000Z', reliability:0.78, novelty:0.63, summary:'A synthetic wage tracker contradicts a rapid-disinflation narrative and argues for position-size restraint.' },
+  { id:'ev-ai-capex', title:'Large-cap technology capex guidance remains elevated', sourceName:'Synthetic company basket', sourceType:'Financials', observedAt:'2026-09-10T20:00:00.000Z', reliability:0.88, novelty:0.69, summary:'Synthetic earnings commentary points to sustained AI infrastructure spending and near-term free-cash-flow pressure.' },
+  { id:'ev-power', title:'Data-centre power demand accelerates', sourceName:'Synthetic grid-load estimator', sourceType:'Alternative data', observedAt:'2026-09-13T06:00:00.000Z', reliability:0.70, novelty:0.91, summary:'A synthetic grid-load proxy indicates faster electricity demand near major data-centre clusters.' },
+  { id:'ev-tech-news', title:'AI infrastructure bottlenecks broaden beyond chips', sourceName:'Synthetic financial newswire', sourceType:'News', observedAt:'2026-09-14T07:00:00.000Z', reliability:0.82, novelty:0.76, summary:'Synthetic reporting highlights power, cooling and construction constraints as the next capex bottlenecks.' },
+  { id:'ev-blog', title:'Crowding risk rises in mega-cap AI basket', sourceName:'Synthetic specialist blog', sourceType:'Blog', observedAt:'2026-09-09T09:00:00.000Z', reliability:0.55, novelty:0.84, summary:'A synthetic positioning essay argues consensus exposure is concentrated and vulnerable to guidance disappointments.' },
+  { id:'ev-earnings', title:'Large-cap earnings catalyst enters focus', sourceName:'Synthetic catalyst calendar', sourceType:'Catalyst', observedAt:'2026-09-14T08:30:00.000Z', reliability:0.97, novelty:0.44, summary:'A synthetic earnings window provides a near-term test of capex durability and monetisation.' },
+];
+
+export const demoThemeProposals = [
+  {
+    id:'theme-duration', title:'Cooling inflation supports duration',
+    thesis:'Disinflation evidence and strengthening duration flows may favor long government-bond exposure, while sticky wages keep the theme conditional rather than definitive.',
+    horizon:'1–3 months', modelConfidence:0.76,
+    evidenceIds:['ev-cpi','ev-yields','ev-fed'], contradictingEvidenceIds:['ev-wages'], catalystEvidenceIds:['ev-fed'],
+    invalidation:'A renewed acceleration in services inflation or a materially more restrictive policy-rate path.',
+    mappings:[
+      { instrumentId:'bond-ust10', stance:'Long', rationale:'Direct duration exposure to easing rate expectations.' },
+      { instrumentId:'etf-tlt', stance:'Long', rationale:'Liquid long-duration ETF expression for research monitoring.' },
+      { instrumentId:'fx-eurusd', stance:'Watch', rationale:'Monitor USD-rate repricing before assigning an FX direction.' },
+    ],
+  },
+  {
+    id:'theme-ai-power', title:'AI capex broadens into power constraints',
+    thesis:'Persistent technology capex and accelerating data-centre load suggest the AI investment cycle is broadening, but crowded mega-cap positioning raises asymmetric catalyst risk.',
+    horizon:'3–12 months', modelConfidence:0.72,
+    evidenceIds:['ev-ai-capex','ev-power','ev-tech-news','ev-earnings'], contradictingEvidenceIds:['ev-blog'], catalystEvidenceIds:['ev-earnings'],
+    invalidation:'Capex guidance is cut, grid-load growth decelerates, or AI monetisation fails to support spending plans.',
+    mappings:[
+      { instrumentId:'idx-spx', stance:'Long', rationale:'Broad equity exposure while the investment cycle remains intact.' },
+      { instrumentId:'stk-aapl', stance:'Watch', rationale:'Track company-specific participation rather than infer it from the broad theme.' },
+      { instrumentId:'eqo-aapl', stance:'Watch', rationale:'Options require separate volatility, strike and premium analysis before use.' },
+    ],
+  },
+];

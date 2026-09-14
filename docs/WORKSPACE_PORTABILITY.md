@@ -1,6 +1,6 @@
 # Workspace portability
 
-MacroTrading exports one schema-versioned JSON document containing the normalized instrument universe, portfolio, paper-execution policy, order records and local audit history.
+MacroTrading exports one schema-versioned JSON document containing the normalized instrument universe, portfolio, paper-execution policy, order records, local audit history, optional broker snapshot and optional theme-research results.
 
 ## Use
 
@@ -19,6 +19,6 @@ MacroTrading exports one schema-versioned JSON document containing the normalize
 - Unfilled imported orders are marked **Imported**, fail closed and have no submit action. They must be recreated and pass current controls before paper submission.
 - Historical filled orders remain read-only records and are never replayed.
 - The document declares `paper-only`; any other execution mode is rejected.
-- No brokerage credential, API key or browser secret is exported.
+- No brokerage credential, API key or browser secret is exported. Account identifiers and research provenance are retained, so workspace files should still be handled as sensitive data.
 
 Import replaces only this browser's local workspace after explicit confirmation. It sends no data to a broker or external service.

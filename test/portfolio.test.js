@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { demoBrokerSnapshot, demoInstruments, demoPortfolio, defaultPolicy, demoScenarios } from '../src/data/demo.js';
+import { demoBrokerSnapshot, demoInstruments, demoPortfolio, demoThemeEvidence, demoThemeProposals, defaultPolicy, demoScenarios } from '../src/data/demo.js';
 import { analysePortfolio, positionMetrics, rebalanceOrders } from '../src/engine/portfolio.js';
 import { preTradeChecks, stressPortfolio } from '../src/engine/risk.js';
 import { validateInstrument } from '../src/domain/instruments.js';
@@ -8,12 +8,14 @@ import { createOrder } from '../src/domain/orders.js';
 import { PaperBroker, LiveBrokerDisabled } from '../src/adapters/paperBroker.js';
 import { createWorkspaceDocument, parseWorkspaceDocument } from '../src/domain/workspace.js';
 import { maskAccountId, parseBrokerSnapshot, reconcilePortfolio } from '../src/domain/reconciliation.js';
+import { createThemeResearch, normaliseThemeResearch } from '../src/domain/themes.js';
+import { LiveThemeModelDisabled, SyntheticThemeModel } from '../src/adapters/themeModel.js';
 
 function workspaceState(overrides={}) {
   return {
     portfolio:structuredClone(demoPortfolio), instruments:structuredClone(demoInstruments),
     policy:structuredClone(defaultPolicy), orders:[],
-    audit:[{ at:'2026-09-14T00:00:00.000Z', event:'Test workspace', detail:'Synthetic fixture', actor:'Test' }], reconciliation:null,
+    audit:[{ at:'2026-09-14T00:00:00.000Z', event:'Test workspace', detail:'Synthetic fixture', actor:'Test' }], reconciliation:null, themeResearch:null,
     ...overrides,
   };
 }
@@ -132,4 +134,48 @@ test('read-only reconciliation does not mutate portfolio or create orders and su
   assert.deepEqual(state.orders, []);
   const restored = parseWorkspaceDocument(createWorkspaceDocument(state));
   assert.deepEqual(restored.state.reconciliation, parseBrokerSnapshot(demoBrokerSnapshot));
+});
+
+test('synthetic theme model produces separately disclosed AI confidence and deterministic evidence scores', async () => {
+  const detector = new SyntheticThemeModel(demoThemeProposals, () => new Date('2026-09-14T12:00:00.000Z'));
+  const research = await detector.detect(demoThemeEvidence);
+  assert.equal(research.model.mode, 'synthetic-no-api');
+  assert.equal(research.themes.length, 2);
+  assert.ok(research.themes.every((theme) => theme.evidenceScore >= 0 && theme.evidenceScore <= 100));
+  assert.ok(research.themes.every((theme) => theme.modelConfidence >= 0 && theme.modelConfidence <= 1));
+  assert.ok(research.themes.every((theme) => theme.sourceBreadth >= 3));
+});
+
+test('theme evidence scoring rewards corroboration and penalizes contradictions', () => {
+  const base = structuredClone(demoThemeProposals[0]);
+  const withoutContradiction = createThemeResearch({
+    evidence:demoThemeEvidence, themes:[{ ...base, contradictingEvidenceIds:[] }],
+    model:{ provider:'Test', name:'Fixture', mode:'test' }, detectedAt:'2026-09-14T12:00:00.000Z',
+  });
+  const withContradiction = createThemeResearch({
+    evidence:demoThemeEvidence, themes:[base],
+    model:{ provider:'Test', name:'Fixture', mode:'test' }, detectedAt:'2026-09-14T12:00:00.000Z',
+  });
+  assert.ok(withContradiction.themes[0].evidenceScore < withoutContradiction.themes[0].evidenceScore);
+});
+
+test('theme validation rejects missing provenance references and unsafe mappings', () => {
+  const missing = structuredClone(demoThemeProposals[0]);
+  missing.evidenceIds.push('missing-evidence');
+  assert.throws(() => createThemeResearch({ evidence:demoThemeEvidence, themes:[missing], model:{provider:'Test',name:'Fixture',mode:'test'}, detectedAt:'2026-09-14T12:00:00.000Z' }), /references missing evidence/);
+  const unsafe = structuredClone(demoThemeProposals[0]);
+  unsafe.mappings[0].instrumentId = '../unsafe';
+  assert.throws(() => createThemeResearch({ evidence:demoThemeEvidence, themes:[unsafe], model:{provider:'Test',name:'Fixture',mode:'test'}, detectedAt:'2026-09-14T12:00:00.000Z' }), /instrument id is unsafe/);
+});
+
+test('theme research cannot create orders, survives workspace export and live AI remains disabled', async () => {
+  const detector = new SyntheticThemeModel(demoThemeProposals, () => new Date('2026-09-14T12:00:00.000Z'));
+  const research = await detector.detect(demoThemeEvidence);
+  const state = workspaceState({ themeResearch:research });
+  const before = structuredClone(state.portfolio);
+  const restored = parseWorkspaceDocument(createWorkspaceDocument(state));
+  assert.deepEqual(state.portfolio, before);
+  assert.deepEqual(state.orders, []);
+  assert.deepEqual(restored.state.themeResearch, normaliseThemeResearch(research));
+  await assert.rejects(() => new LiveThemeModelDisabled().detect(), /Live AI theme detection is disabled/);
 });

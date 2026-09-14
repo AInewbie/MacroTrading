@@ -6,12 +6,12 @@ MacroTrading separates portfolio intent from broker execution:
 
 1. **Instrument master** normalizes asset-class-specific identifiers and economics.
 2. **Portfolio engine** converts positions to market-value and risk views.
-3. **Strategy layer** will convert signals and objectives into target exposures.
+3. **Research and strategy layer** separates evidence, AI-proposed themes and deterministic corroboration from any future conversion into target exposures.
 4. **Order planner** converts targets into executable quantities.
 5. **Risk gateway** evaluates versioned pre-trade policies.
 6. **Broker adapter** maps approved orders to a broker contract and reconciles acknowledgements and fills.
 
-The current release implements items 1, 2, 4 and 5, plus a deterministic paper adapter and broker-neutral read-only reconciliation for item 6, with schema-versioned local workspace portability. It deliberately does not claim production valuations or live connectivity.
+The current release implements items 1, 2, 4 and 5, a governed theme-research boundary for item 3, plus a deterministic paper adapter and broker-neutral read-only reconciliation for item 6, with schema-versioned local workspace portability. It deliberately does not claim production valuations, live AI/data connectivity or live brokerage connectivity.
 
 ## Normalized asset model
 
@@ -23,7 +23,7 @@ Common fields include instrument id, display symbol, asset class, reporting curr
 2. Historical price adapter and FX conversion graph.
 3. Return, volatility, correlation, beta, VaR/ES and drawdown analytics.
 4. Constraint-aware optimizer with turnover, liquidity and concentration controls.
-5. Strategy/signal interface with regime and confidence metadata.
+5. Licensed source adapters, live structured theme-model integration, contradiction retrieval, theme history and a separately governed strategy/signal interface. The synthetic evidence and model boundary are delivered.
 6. Broker-specific read-only account adapters with identifier mapping and freshness checks. The broker-neutral snapshot comparison is delivered.
 7. Broker preview/what-if order endpoint with idempotency.
 8. Separately approved live routing behind dual confirmation and kill switch.

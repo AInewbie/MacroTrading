@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 — governed AI theme research
+
+- Add a model-adapter boundary for structured AI theme proposals, with live providers failing closed.
+- Demonstrate theme detection across synthetic alternative data, news, blogs, macro data, financials, research and catalysts.
+- Independently score freshness, reliability, novelty, source breadth, evidence depth, catalysts and contradictions.
+- Preserve provenance, model disclosure, AI confidence, horizon, invalidation conditions and tradeable-instrument hypotheses.
+- Keep themes fully separate from target construction, order staging and execution.
+
 ## 0.3.0 — read-only broker reconciliation
 
 - Import and validate a bounded broker-neutral account snapshot without network access or credentials.
