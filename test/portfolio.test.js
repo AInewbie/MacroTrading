@@ -6,6 +6,16 @@ import { preTradeChecks, stressPortfolio } from '../src/engine/risk.js';
 import { validateInstrument } from '../src/domain/instruments.js';
 import { createOrder } from '../src/domain/orders.js';
 import { PaperBroker, LiveBrokerDisabled } from '../src/adapters/paperBroker.js';
+import { createWorkspaceDocument, parseWorkspaceDocument } from '../src/domain/workspace.js';
+
+function workspaceState(overrides={}) {
+  return {
+    portfolio:structuredClone(demoPortfolio), instruments:structuredClone(demoInstruments),
+    policy:structuredClone(defaultPolicy), orders:[],
+    audit:[{ at:'2026-09-14T00:00:00.000Z', event:'Test workspace', detail:'Synthetic fixture', actor:'Test' }],
+    ...overrides,
+  };
+}
 
 test('demo universe covers all requested asset classes with valid instruments', () => {
   const expected = ['Stock','Equity Index','Bond','FX','FX Option','Equity Option','ETF','ETF Option','Commodity'];
@@ -61,4 +71,33 @@ test('stress and rebalance engines produce finite outputs', () => {
   const orders = rebalanceOrders(demoPortfolio, demoInstruments);
   assert.ok(orders.length > 0);
   assert.ok(orders.every((order) => order.quantity > 0));
+});
+
+test('workspace export round-trips the normalized multi-asset state', () => {
+  const original = workspaceState();
+  const document = createWorkspaceDocument(original, new Date('2026-09-14T10:00:00.000Z'));
+  const restored = parseWorkspaceDocument(JSON.stringify(document));
+  assert.equal(document.schemaVersion, 1);
+  assert.equal(document.executionMode, 'paper-only');
+  assert.deepEqual(restored.state.portfolio, original.portfolio);
+  assert.deepEqual(restored.state.instruments, original.instruments);
+  assert.deepEqual(restored.state.policy, original.policy);
+});
+
+test('workspace import demotes unfilled orders so they cannot be submitted', () => {
+  const instrument = demoInstruments[0];
+  const order = createOrder({ side:'Buy', quantity:10, orderType:'Limit', limitPrice:instrument.price }, instrument);
+  order.risk = { pass:true, notional:2324, checks:[{ name:'Synthetic check', pass:true }] };
+  const document = createWorkspaceDocument(workspaceState({ orders:[order] }), new Date('2026-09-14T10:00:00.000Z'));
+  const restored = parseWorkspaceDocument(document);
+  assert.equal(restored.demotedOrders, 1);
+  assert.equal(restored.state.orders[0].status, 'Imported');
+  assert.equal(restored.state.orders[0].risk.pass, false);
+});
+
+test('workspace import rejects unsupported versions and broken position references', () => {
+  const document = createWorkspaceDocument(workspaceState(), new Date('2026-09-14T10:00:00.000Z'));
+  assert.throws(() => parseWorkspaceDocument({ ...document, schemaVersion:2 }), /schema version 2 is not supported/);
+  document.workspace.portfolio.positions[0].instrumentId = 'missing-instrument';
+  assert.throws(() => parseWorkspaceDocument(document), /references missing instrument/);
 });
