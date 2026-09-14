@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 — read-only broker reconciliation
+
+- Import and validate a bounded broker-neutral account snapshot without network access or credentials.
+- Compare cash and position quantities against the local portfolio.
+- Identify matched positions, quantity breaks, missing broker positions and unmapped broker holdings.
+- Mask account identifiers in the interface and persist the snapshot with workspace backups.
+- Keep reconciliation strictly informational: it cannot mutate holdings, generate orders or submit trades.
+
 ## 0.2.0 — validated workspace portability
 
 - Export instruments, portfolio, paper controls, order records and audit history as schema-versioned JSON.

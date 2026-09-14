@@ -2,7 +2,7 @@
 
 Risk-first multi-asset portfolio construction and paper-execution workbench.
 
-## Current release: 0.2.0
+## Current release: 0.3.0
 
 The first release provides one normalized portfolio and order model for:
 
@@ -16,6 +16,8 @@ The first release provides one normalized portfolio and order model for:
 It calculates market value, delta-adjusted exposure, P&L, DV01, vega and gamma; aggregates exposure by asset class; runs transparent deterministic scenarios; generates target-rebalance orders; applies pre-trade limits; and fills approved orders through a simulated paper broker.
 
 The workspace can be exported as schema-versioned JSON and restored in another browser. Imports validate the entire portfolio and instrument graph before replacing local state. Unfilled imported orders are made non-executable and require fresh staging and controls.
+
+A read-only reconciliation workspace accepts a validated broker-neutral account snapshot, masks the account identifier, and compares broker cash and quantities with the local model. It surfaces matched positions, quantity differences, missing broker positions and unmapped holdings without changing the portfolio or creating orders. Use the built-in synthetic snapshot or follow [the snapshot contract](docs/BROKER_RECONCILIATION.md).
 
 **Live brokerage execution is disabled.** Synthetic prices and simplified sensitivities are provided only to exercise the workflow. This release is not investment advice, a valuation system, or a production order-management system.
 
@@ -52,5 +54,5 @@ docs            design, roadmap and execution controls
 
 Before any live use, the project requires a chosen broker, authenticated account discovery, real instrument identifiers, live/reference market data, currency conversion, trading calendars, full option and bond valuation, margin estimates, reconciliation, idempotent order submission, durable audit storage, secrets management, monitoring and a separately approved versioned risk policy.
 
-See [architecture and roadmap](docs/ARCHITECTURE.md) and [execution safety](docs/EXECUTION_SAFETY.md).
+See [architecture and roadmap](docs/ARCHITECTURE.md), [execution safety](docs/EXECUTION_SAFETY.md) and [broker reconciliation](docs/BROKER_RECONCILIATION.md).
 Workspace backup and restore behavior is documented in [workspace portability](docs/WORKSPACE_PORTABILITY.md).

@@ -1,0 +1,10 @@
+.standalone-note { color: var(--muted); font-size: 11px; }
+.empty-state { padding: 34px; display: grid; justify-items: start; gap: 13px; }
+.empty-state h2,
+.empty-state p { margin: 0; }
+.reconciliation-metrics { grid-template-columns: repeat(4, minmax(150px, 1fr)); }
+.reconciliation-card { margin-top: 16px; }
+
+@media (max-width: 760px) {
+  .reconciliation-metrics { grid-template-columns: repeat(2, 1fr); }
+}

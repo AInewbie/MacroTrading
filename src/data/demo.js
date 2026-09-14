@@ -38,3 +38,19 @@ export const demoScenarios = [
   { id:'inflation', name:'Inflation resurgence', shocks:{ equity:-0.07, rates:0.0125, fx:0.02, volatility:0.15, commodity:0.16 } },
   { id:'usd-down', name:'Broad USD decline', shocks:{ equity:0.04, rates:-0.0025, fx:0.09, volatility:0.05, commodity:0.10 } },
 ];
+
+export const demoBrokerSnapshot = {
+  format:'macrotrading-broker-snapshot', schemaVersion:1, asOf:'2026-09-14T12:00:00.000Z',
+  account:{ broker:'Synthetic Broker', accountId:'PAPER-U1234567', baseCurrency:'USD', cash:997500 },
+  positions:[
+    { instrumentId:'stk-aapl', brokerSymbol:'AAPL', quantity:610 },
+    { instrumentId:'bond-ust10', brokerSymbol:'UST10Y', quantity:2 },
+    { instrumentId:'fx-eurusd', brokerSymbol:'EUR.USD', quantity:180000 },
+    { instrumentId:'eqo-aapl', brokerSymbol:'AAPL 20261218 C240', quantity:-12 },
+    { instrumentId:'etf-tlt', brokerSymbol:'TLT', quantity:1300 },
+    { instrumentId:'etfo-tlt', brokerSymbol:'TLT 20261218 C95', quantity:18 },
+    { instrumentId:'cmd-gold', brokerSymbol:'GC', quantity:1 },
+    { instrumentId:'idx-spx', brokerSymbol:'SPX', quantity:-20 },
+    { instrumentId:'broker-only-vix', brokerSymbol:'VX', quantity:3 },
+  ],
+};

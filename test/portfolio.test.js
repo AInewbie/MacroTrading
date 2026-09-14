@@ -1,18 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { demoInstruments, demoPortfolio, defaultPolicy, demoScenarios } from '../src/data/demo.js';
+import { demoBrokerSnapshot, demoInstruments, demoPortfolio, defaultPolicy, demoScenarios } from '../src/data/demo.js';
 import { analysePortfolio, positionMetrics, rebalanceOrders } from '../src/engine/portfolio.js';
 import { preTradeChecks, stressPortfolio } from '../src/engine/risk.js';
 import { validateInstrument } from '../src/domain/instruments.js';
 import { createOrder } from '../src/domain/orders.js';
 import { PaperBroker, LiveBrokerDisabled } from '../src/adapters/paperBroker.js';
 import { createWorkspaceDocument, parseWorkspaceDocument } from '../src/domain/workspace.js';
+import { maskAccountId, parseBrokerSnapshot, reconcilePortfolio } from '../src/domain/reconciliation.js';
 
 function workspaceState(overrides={}) {
   return {
     portfolio:structuredClone(demoPortfolio), instruments:structuredClone(demoInstruments),
     policy:structuredClone(defaultPolicy), orders:[],
-    audit:[{ at:'2026-09-14T00:00:00.000Z', event:'Test workspace', detail:'Synthetic fixture', actor:'Test' }],
+    audit:[{ at:'2026-09-14T00:00:00.000Z', event:'Test workspace', detail:'Synthetic fixture', actor:'Test' }], reconciliation:null,
     ...overrides,
   };
 }
@@ -100,4 +101,35 @@ test('workspace import rejects unsupported versions and broken position referenc
   assert.throws(() => parseWorkspaceDocument({ ...document, schemaVersion:2 }), /schema version 2 is not supported/);
   document.workspace.portfolio.positions[0].instrumentId = 'missing-instrument';
   assert.throws(() => parseWorkspaceDocument(document), /references missing instrument/);
+});
+
+test('broker snapshot reconciliation reports cash, quantity, missing and unmapped breaks', () => {
+  const snapshot = parseBrokerSnapshot(JSON.stringify(demoBrokerSnapshot));
+  const result = reconcilePortfolio(demoPortfolio, demoInstruments, snapshot);
+  assert.equal(result.cashDifference, -2500);
+  assert.equal(result.positionBreaks, 3);
+  assert.equal(result.rows.find((row) => row.instrumentId === 'stk-aapl').status, 'Quantity break');
+  assert.equal(result.rows.find((row) => row.instrumentId === 'fxo-eurusd').status, 'Missing at broker');
+  assert.equal(result.rows.find((row) => row.instrumentId === 'broker-only-vix').status, 'Unmapped');
+  assert.equal(maskAccountId(snapshot.account.accountId).endsWith('4567'), true);
+});
+
+test('broker snapshot validation rejects unsafe and duplicate position identifiers', () => {
+  const duplicate = structuredClone(demoBrokerSnapshot);
+  duplicate.positions.push({ ...duplicate.positions[0] });
+  assert.throws(() => parseBrokerSnapshot(duplicate), /duplicate instrument/);
+  const unsafe = structuredClone(demoBrokerSnapshot);
+  unsafe.positions[0].instrumentId = '../account';
+  assert.throws(() => parseBrokerSnapshot(unsafe), /unsafe instrument id/);
+});
+
+test('read-only reconciliation does not mutate portfolio or create orders and survives workspace export', () => {
+  const original = structuredClone(demoPortfolio);
+  const state = workspaceState({ reconciliation:structuredClone(demoBrokerSnapshot) });
+  const result = reconcilePortfolio(state.portfolio, state.instruments, state.reconciliation);
+  assert.equal(result.pass, false);
+  assert.deepEqual(state.portfolio, original);
+  assert.deepEqual(state.orders, []);
+  const restored = parseWorkspaceDocument(createWorkspaceDocument(state));
+  assert.deepEqual(restored.state.reconciliation, parseBrokerSnapshot(demoBrokerSnapshot));
 });

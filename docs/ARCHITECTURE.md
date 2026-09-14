@@ -11,7 +11,7 @@ MacroTrading separates portfolio intent from broker execution:
 5. **Risk gateway** evaluates versioned pre-trade policies.
 6. **Broker adapter** maps approved orders to a broker contract and reconciles acknowledgements and fills.
 
-The current release implements items 1, 2, 4 and 5, plus a deterministic paper adapter for item 6 and schema-versioned local workspace portability. It deliberately does not claim production valuations or live connectivity.
+The current release implements items 1, 2, 4 and 5, plus a deterministic paper adapter and broker-neutral read-only reconciliation for item 6, with schema-versioned local workspace portability. It deliberately does not claim production valuations or live connectivity.
 
 ## Normalized asset model
 
@@ -24,7 +24,7 @@ Common fields include instrument id, display symbol, asset class, reporting curr
 3. Return, volatility, correlation, beta, VaR/ES and drawdown analytics.
 4. Constraint-aware optimizer with turnover, liquidity and concentration controls.
 5. Strategy/signal interface with regime and confidence metadata.
-6. Broker account and position reconciliation in read-only mode.
+6. Broker-specific read-only account adapters with identifier mapping and freshness checks. The broker-neutral snapshot comparison is delivered.
 7. Broker preview/what-if order endpoint with idempotency.
 8. Separately approved live routing behind dual confirmation and kill switch.
 

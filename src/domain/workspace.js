@@ -1,5 +1,6 @@
 import { ASSET_CLASSES, validateInstrument } from './instruments.js';
 import { ORDER_SIDES, ORDER_TYPES } from './orders.js';
+import { normaliseBrokerSnapshot } from './reconciliation.js';
 
 export const WORKSPACE_FORMAT = 'macrotrading-workspace';
 export const WORKSPACE_SCHEMA_VERSION = 1;
@@ -170,6 +171,7 @@ export function validateWorkspaceState(value, { imported=false }={}) {
     policy:normalisePolicy(source.policy),
     orders:array(source.orders ?? [], 'orders', limits.orders).map((item, index) => normaliseOrder(item, index, instrumentMap, imported)),
     audit:array(source.audit ?? [], 'audit trail', limits.audit).map(normaliseAudit),
+    reconciliation:source.reconciliation == null ? null : normaliseBrokerSnapshot(source.reconciliation),
   };
   return state;
 }
