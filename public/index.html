@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07111f">
+  <title>MacroTrading · Multi-asset workbench</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#overview" aria-label="MacroTrading home"><span class="brand-mark">M</span><span><b>MacroTrading</b><small>Decision workbench</small></span></a>
+      <nav id="nav" aria-label="Primary navigation"></nav>
+      <div class="environment"><span class="status-dot"></span><div><b>Paper environment</b><small>Synthetic market data</small></div></div>
+    </aside>
+    <main>
+      <header class="topbar">
+        <button id="menu-button" class="icon-button" aria-label="Open navigation">☰</button>
+        <div><p class="eyebrow">GLOBAL MACRO · USD BASE</p><h1 id="page-title">Portfolio overview</h1></div>
+        <div class="top-actions"><button id="reset-demo" class="button ghost">Reset demo</button><button id="stage-rebalance" class="button primary">Stage rebalance</button></div>
+      </header>
+      <div id="notice" class="notice" hidden></div>
+      <section id="app" aria-live="polite"></section>
+    </main>
+  </div>
+  <dialog id="ticket-dialog">
+    <form id="ticket-form" method="dialog">
+      <div class="dialog-head"><div><p class="eyebrow">PAPER BROKER</p><h2>Stage an order</h2></div><button value="cancel" class="icon-button" aria-label="Close">×</button></div>
+      <label>Instrument<select id="ticket-instrument" required></select></label>
+      <div class="form-grid"><label>Side<select id="ticket-side"><option>Buy</option><option>Sell</option></select></label><label>Quantity<input id="ticket-quantity" type="number" min="0.0001" step="any" value="1" required></label></div>
+      <div class="form-grid"><label>Order type<select id="ticket-type"><option>Limit</option><option>Market</option><option>Stop</option></select></label><label>Limit price<input id="ticket-limit" type="number" min="0.0001" step="any"></label></div>
+      <div id="ticket-preview" class="ticket-preview"></div>
+      <div class="dialog-actions"><button value="cancel" class="button ghost">Cancel</button><button id="add-order" value="default" class="button primary">Run checks & stage</button></div>
+    </form>
+  </dialog>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
