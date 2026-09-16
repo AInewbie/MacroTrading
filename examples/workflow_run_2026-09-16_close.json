@@ -1,0 +1,97 @@
+{
+  "evidence": [
+    {
+      "id": "oil-fed-hike-sep-2026",
+      "theme_id": "oil_refined_fuel_inflation",
+      "observed_at": "2026-09-16T18:00:00Z",
+      "kind": "observed_fact",
+      "direction": "support",
+      "material": true,
+      "summary": "The FOMC unanimously raised the federal-funds target by 25bp to 3.75%-4.00%. Its September projections put median 2026 PCE inflation at 3.7%, up from 3.6% in June, and the median year-end policy rate at 4.1%. This confirms the tighter-financial-conditions leg of the oil/inflation theme, but does not itself prove physical fuel scarcity.",
+      "sources": [
+        {
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+          "title": "Federal Reserve issues FOMC statement",
+          "published_at": "2026-09-16T18:00:00Z"
+        },
+        {
+          "url": "https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260916.htm",
+          "title": "September 2026 FOMC projections",
+          "published_at": "2026-09-16T18:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "ai-fed-robust-capital-investment-sep-2026",
+      "theme_id": "ai_capex_repricing",
+      "observed_at": "2026-09-16T18:00:00Z",
+      "kind": "observed_fact",
+      "direction": "contradict",
+      "material": true,
+      "summary": "The FOMC described aggregate capital investment as robust, while Reuters attributed part of persistent price pressure to the AI investment surge. This is broad macro evidence against an established capex collapse, not a qualifying hyperscaler guidance test and not proof that semiconductor revenue plans cannot weaken.",
+      "sources": [
+        {
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+          "title": "Federal Reserve issues FOMC statement",
+          "published_at": "2026-09-16T18:00:00Z"
+        },
+        {
+          "url": "https://www.reuters.com/business/warshs-words-may-matter-more-than-anticipated-fed-rate-hike-2026-09-16/",
+          "title": "Fed hikes rates and sees more tightening ahead",
+          "published_at": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "id": "japan-fed-dollar-headwind-sep-2026",
+      "theme_id": "japan_normalization",
+      "observed_at": "2026-09-16T20:00:00Z",
+      "kind": "inference",
+      "direction": "contradict",
+      "material": true,
+      "summary": "The Fed hike, higher projected U.S. policy path and stronger dollar increase the relative-rate headwind for the yen before the BOJ decision. FXY's completed-session decline confirms the absence of positive yen momentum, but one session does not breach the two-close invalidation rule.",
+      "sources": [
+        {
+          "url": "https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260916.htm",
+          "title": "September 2026 FOMC projections",
+          "published_at": "2026-09-16T18:00:00Z"
+        },
+        {
+          "url": "https://www.reuters.com/world/asia-pacific/dollar-girded-by-bets-us-hiking-cycle-2026-09-16/",
+          "title": "Dollar rises after Fed hikes rates",
+          "published_at": "2026-09-16"
+        }
+      ]
+    }
+  ],
+  "market_closes": [
+    {
+      "theme_id": "ai_capex_repricing",
+      "session_date": "2026-09-16",
+      "proxy_close": 545.56,
+      "benchmark_close": 754.10,
+      "proxy_return_pct": 0.64,
+      "benchmark_return_pct": -0.43,
+      "completed": true,
+      "source_url": "https://stockanalysis.com/etf/smh/"
+    },
+    {
+      "theme_id": "japan_normalization",
+      "session_date": "2026-09-16",
+      "proxy_close": 58.76,
+      "proxy_return_pct": -0.63,
+      "completed": true,
+      "source_url": "https://stockanalysis.com/etf/fxy/"
+    },
+    {
+      "theme_id": "china_domestic_demand",
+      "session_date": "2026-09-16",
+      "proxy_close": 16.06,
+      "benchmark_close": 52.31,
+      "proxy_return_pct": -1.17,
+      "benchmark_return_pct": -1.13,
+      "completed": true,
+      "source_url": "https://stockanalysis.com/etf/chiq/"
+    }
+  ]
+}
