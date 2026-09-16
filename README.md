@@ -30,6 +30,12 @@ Generate the complete five-theme review instead of alert-only output:
 macrotrading --config config/live_themes.json --input examples/five_theme_review_2026-09-16.json --full-review
 ```
 
+Write a portable visual report on every run:
+
+```bash
+macrotrading --config config/live_themes.json --input examples/five_theme_review_2026-09-16.json --full-review --generated-at 2026-09-16T16:55:00Z --html-out MacroTrading-five-theme-review-2026-09-16.html
+```
+
 Run tests:
 
 ```bash

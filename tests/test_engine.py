@@ -5,6 +5,7 @@ from pathlib import Path
 from macrotrading.engine import AnalysisEngine
 from macrotrading.models import EvidenceEvent, MarketClose
 from macrotrading.report import render_markdown
+from macrotrading.html_report import render_html
 from macrotrading.scoring import watch_v1_score
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,6 +39,10 @@ class EngineTests(unittest.TestCase):
         report = render_markdown(result, full_review=True)
         self.assertEqual(report.count("\n## "), 5)
         self.assertIn("Paper/implementation risks", report)
+        html = render_html(result, "2026-09-16T16:55:00Z")
+        self.assertEqual(html.count('class="theme-card"'), 5)
+        self.assertIn("Portfolio decisions required", html)
+        self.assertIn("Blocked pending implementation inputs", html)
 
     def test_market_threshold_requires_two_completed_closes(self):
         one = MarketClose.from_dict({"theme_id": "japan_normalization", "session_date": "2026-09-16", "proxy_close": 57.80, "proxy_return_pct": -1.0})

@@ -78,6 +78,7 @@ class AnalysisEngine:
                 "catalysts": list(spec.get("catalysts", [])),
                 "invalidation": spec.get("invalidation", "Not specified."),
                 "paper_risks": list(spec.get("paper_risks", [])),
+                "decisions": list(spec.get("decisions", [])),
                 "invalidation_met": any(e.metadata.get("invalidation_met", False) for e in new_events),
                 "research_only": True,
             }

@@ -12,6 +12,7 @@
       "fundamental_tests": ["Official physical-flow data show whether Saudi crude exports are restored, rerouted or lost.", "Refined-product inventories, throughput and exports establish whether diesel scarcity is normalizing."],
       "catalysts": ["Federal Reserve decision and guidance on September 16, 2026.", "Official Saudi pipeline/restoration and shipping-flow updates.", "Weekly EIA inventories and subsequent inflation releases."],
       "paper_risks": ["Crude and refined products can diverge sharply.", "Geopolitical headlines can gap markets outside liquid hours.", "Without holdings, costs and option surfaces, no portfolio hedge or P&L can be validated."],
+      "decisions": ["Approve separate crude-disruption and refined-fuel risk buckets rather than one combined oil position.", "Define the evidence required for restoration and the maximum event-risk budget before considering activation.", "Decide whether existing energy, inflation and USD exposure already duplicates this theme."],
       "coverage": ["Middle East infrastructure and restoration", "Hormuz and Bab el-Mandeb shipping", "Brent and WTI", "diesel, refining throughput and margins", "Russian and Gulf product exports", "US inflation, Fed, Treasury yields and USD", "energy versus broad equities", "EIA forecasts and CFTC positioning"],
       "invalidation": "Separate crude restoration from refined-fuel normalization; neither is established by rerouting alone."
     },
@@ -25,6 +26,7 @@
       "catalysts": ["ASML Q3 results on October 14, 2026.", "Official hyperscaler capex revisions or binding AI restrictions; dates remain unverified."],
       "invalidation": "Suspend the bearish spending thesis after two relevant reporting rounds reaffirm or raise comparable capex/revenue plans with sustained AI demand; separately, two SMH/SPY closes at least 3% above the anchor invalidate the current bearish market setup.",
       "paper_risks": ["No qualifying capex or supplier-guidance cut has occurred.", "The proxy embeds semiconductor beta and export-control exposure.", "Liquidity, borrowing, hedge ratios and option costs have not been checked."],
+      "decisions": ["Keep the theme exploratory until a qualifying company guidance cut or binding restriction occurs.", "Decide whether SMH/SPY is acceptable as a dashboard only or whether a beta-adjusted basket is required.", "Map existing technology and growth exposure before assigning any risk."],
       "proxy": {"symbol": "SMH/SPY", "anchor_proxy": 542.11, "anchor_benchmark": 757.44, "threshold_pct": 3.0, "hypothesis_direction": "negative"},
       "fundamental_tests": ["A named hyperscaler cuts comparable annual capex guidance by at least 5%.", "ASML, Nvidia or TSMC cuts comparable forward revenue guidance by at least 5% and cites weaker AI demand or cancellations."]
     },
@@ -38,6 +40,7 @@
       "catalysts": ["BOJ policy decision and guidance on September 18, 2026.", "BOJ Summary of Opinions on October 1, 2026."],
       "invalidation": "Suspend after two scheduled meetings without tightening and removal of the official tightening bias; separately, two FXY closes at least 2% below the anchor invalidate the bullish-yen market setup.",
       "paper_risks": ["Expected tightening may already be priced.", "US rates and the dollar can dominate the yen response.", "FXY tracking, liquidity, spreads and carry costs have not been fully documented."],
+      "decisions": ["Predefine what BOJ outcome constitutes a positive surprise beyond a routine 25bp hike.", "Choose whether the eventual portfolio expression is spot FX, FXY, options or a rates/FX combination only after costs are verified.", "Measure existing Fed, USD and carry exposure before assigning Japan risk."],
       "proxy": {"symbol": "FXY", "anchor_proxy": 59.13, "threshold_pct": 2.0, "hypothesis_direction": "positive"},
       "fundamental_tests": ["Official BOJ guidance retains a conditional tightening bias.", "The BOJ implements at least a 25bp increase above the July 31 1.0% baseline."]
     },
@@ -51,6 +54,7 @@
       "catalysts": ["Next official retail, investment and property releases; exact date remains unverified.", "Any funded household-support or material property-support package."],
       "invalidation": "Suspend when retail-sales growth reaches at least 3% in two consecutive monthly releases and property-investment growth improves to at least -14.9%; separately, two CHIQ/MCHI closes at least 3% above the anchor invalidate the bearish market setup.",
       "paper_risks": ["CHIQ is an offshore equity proxy rather than a retail-sales index.", "Stimulus headlines can reprice equities before implementation details emerge.", "Fund overlap, FX and trading costs have not been modeled."],
+      "decisions": ["Decide whether CHIQ/MCHI overlap is acceptable or a cleaner consumer-versus-industrial basket is required.", "Set the policy detail needed for a funded-stimulus reversal trigger.", "Map China, emerging-market and global-growth exposure before adding the theme."],
       "proxy": {"symbol": "CHIQ/MCHI", "anchor_proxy": 16.25, "anchor_benchmark": 52.91, "threshold_pct": 3.0, "hypothesis_direction": "negative"},
       "fundamental_tests": ["Latest monthly retail-sales growth is below 1% year over year.", "Latest year-to-date fixed-asset investment growth is negative."]
     },
@@ -64,6 +68,7 @@
       "catalysts": ["Parliamentary disposition of Germany's 2027 budget; exact date remains unverified.", "Funded contract awards and supplier guidance/cash-flow releases."],
       "invalidation": "Reassess if the finalized comparable German ministry budget is below EUR98.73bn. Suspend the equity thesis if two current top-five holdings cut comparable revenue guidance by at least 5% and WDEF/STOXX 600 is at least 5% below baseline for two closes.",
       "paper_risks": ["Draft budgets and cooperation letters are not enacted appropriations or funded revenue.", "Supplier execution, working capital and valuation can overwhelm spending headlines.", "WDEF official-close continuity, holdings, spreads and hedging costs require verification."],
+      "decisions": ["Require funded contract conversion and cash-flow evidence before treating budget headlines as revenue.", "Verify WDEF holdings, official closes, liquidity and concentration before using it as the portfolio proxy.", "Decide the valuation and drawdown limits that would override otherwise supportive spending evidence."],
       "proxy": {"symbol": "WDEF/STOXX600", "anchor_proxy": 31.01, "anchor_benchmark": 634.18, "threshold_pct": 3.0, "hypothesis_direction": "positive"},
       "fundamental_tests": ["Comparable German defense-ministry budget is at least 10% above the prior-year target.", "Rheinmetall latest quarterly revenue grows at least 20% year over year."]
     }
