@@ -36,6 +36,8 @@ Write a portable visual report on every run:
 macrotrading --config config/live_themes.json --input examples/five_theme_review_2026-09-16.json --full-review --generated-at 2026-09-16T16:55:00Z --html-out MacroTrading-five-theme-review-2026-09-16.html
 ```
 
+Visual system documentation: [`docs/workflow-architecture.html`](docs/workflow-architecture.html) maps the implemented research workflow, module boundaries, alert gates, portfolio approval controls and target production roadmap.
+
 Run tests:
 
 ```bash
