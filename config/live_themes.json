@@ -1,0 +1,47 @@
+{
+  "version": "watch-v1.0",
+  "as_of": "2026-09-16T16:30:00Z",
+  "themes": {
+    "oil_refined_fuel_inflation": {
+      "title": "Oil, refined-fuel scarcity and inflation",
+      "hypothesis": "Physical crude and refined-product disruption can sustain inflation and tighten financial conditions.",
+      "status": "Research review",
+      "components": null,
+      "coverage": ["Middle East infrastructure and restoration", "Hormuz and Bab el-Mandeb shipping", "Brent and WTI", "diesel, refining throughput and margins", "Russian and Gulf product exports", "US inflation, Fed, Treasury yields and USD", "energy versus broad equities", "EIA forecasts and CFTC positioning"],
+      "invalidation": "Separate crude restoration from refined-fuel normalization; neither is established by rerouting alone."
+    },
+    "ai_capex_repricing": {
+      "title": "AI capital spending and semiconductor repricing",
+      "hypothesis": "Potential semiconductor underperformance; an investment slowdown is not established.",
+      "status": "Exploratory watch",
+      "components": {"P": 0.5, "F": 0.0, "M": 0.0, "C": 0.5, "X": 0.5, "R": 2.0},
+      "proxy": {"symbol": "SMH/SPY", "anchor_proxy": 542.11, "anchor_benchmark": 757.44, "threshold_pct": 3.0, "hypothesis_direction": "negative"},
+      "fundamental_tests": ["A named hyperscaler cuts comparable annual capex guidance by at least 5%.", "ASML, Nvidia or TSMC cuts comparable forward revenue guidance by at least 5% and cites weaker AI demand or cancellations."]
+    },
+    "japan_normalization": {
+      "title": "Japan monetary normalization and yen repricing",
+      "hypothesis": "Potential yen appreciation if BOJ policy exceeds expectations.",
+      "status": "Exploratory watch",
+      "components": {"P": 1.0, "F": 0.5, "M": 0.0, "C": 1.0, "X": 0.5, "R": 2.0},
+      "proxy": {"symbol": "FXY", "anchor_proxy": 59.13, "threshold_pct": 2.0, "hypothesis_direction": "positive"},
+      "fundamental_tests": ["Official BOJ guidance retains a conditional tightening bias.", "The BOJ implements at least a 25bp increase above the July 31 1.0% baseline."]
+    },
+    "china_domestic_demand": {
+      "title": "China household-demand weakness versus industrial resilience",
+      "hypothesis": "Potential consumer-discretionary underperformance with stimulus-reversal risk.",
+      "status": "Research review",
+      "components": {"P": 1.0, "F": 1.0, "M": 0.0, "C": 0.5, "X": 0.5, "R": 1.0},
+      "proxy": {"symbol": "CHIQ/MCHI", "anchor_proxy": 16.25, "anchor_benchmark": 52.91, "threshold_pct": 3.0, "hypothesis_direction": "negative"},
+      "fundamental_tests": ["Latest monthly retail-sales growth is below 1% year over year.", "Latest year-to-date fixed-asset investment growth is negative."]
+    },
+    "europe_defense": {
+      "title": "European defense spending converting into company revenue",
+      "hypothesis": "Potential European defense outperformance, conditional on delivery and valuation.",
+      "status": "Research review",
+      "components": {"P": 1.0, "F": 1.0, "M": 0.5, "C": 0.5, "X": 0.5, "R": 1.0},
+      "proxy": {"symbol": "WDEF/STOXX600", "anchor_proxy": 31.01, "anchor_benchmark": 634.18, "threshold_pct": 3.0, "hypothesis_direction": "positive"},
+      "fundamental_tests": ["Comparable German defense-ministry budget is at least 10% above the prior-year target.", "Rheinmetall latest quarterly revenue grows at least 20% year over year."]
+    }
+  }
+}
+

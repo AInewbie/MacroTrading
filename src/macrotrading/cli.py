@@ -1,0 +1,39 @@
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+from .engine import AnalysisEngine
+from .models import EvidenceEvent, MarketClose
+from .report import render_markdown
+
+
+def _load(path: str) -> dict:
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Analyze MacroTrading research themes")
+    parser.add_argument("--config", required=True)
+    parser.add_argument("--input", required=True)
+    parser.add_argument("--state")
+    parser.add_argument("--state-out")
+    parser.add_argument("--json", action="store_true", dest="as_json")
+    args = parser.parse_args()
+
+    payload = _load(args.input)
+    state = _load(args.state) if args.state and Path(args.state).exists() else None
+    engine = AnalysisEngine(_load(args.config), state)
+    result = engine.analyze(
+        [EvidenceEvent.from_dict(item) for item in payload.get("evidence", [])],
+        [MarketClose.from_dict(item) for item in payload.get("market_closes", [])],
+    )
+    if args.state_out:
+        Path(args.state_out).write_text(json.dumps(result["state"], indent=2) + "\n", encoding="utf-8")
+    print(json.dumps(result, indent=2) if args.as_json else render_markdown(result), end="")
+
+
+if __name__ == "__main__":
+    main()
+

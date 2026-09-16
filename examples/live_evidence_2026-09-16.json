@@ -1,0 +1,36 @@
+{
+  "evidence": [
+    {
+      "id": "eia-wpsr-2026-09-16",
+      "theme_id": "oil_refined_fuel_inflation",
+      "observed_at": "2026-09-16T14:30:00Z",
+      "kind": "observed_fact",
+      "direction": "contradict",
+      "material": true,
+      "summary": "EIA reported a 0.6m-barrel crude draw, 0.8m gasoline build and 1.6m distillate build; distillate inventories remained 13% below their five-year average.",
+      "sources": [{"url": "https://ir.eia.gov/wpsr/wpsrsummary.pdf", "title": "EIA Weekly Petroleum Status Report", "published_at": "2026-09-16"}]
+    },
+    {
+      "id": "orlen-replacement-crude-2026-09-16",
+      "theme_id": "oil_refined_fuel_inflation",
+      "observed_at": "2026-09-16T15:59:00Z",
+      "kind": "observed_fact",
+      "direction": "support",
+      "material": true,
+      "summary": "Orlen contracted 16 additional crude deliveries, about 16m barrels, to cover disrupted Saudi supply for September and October.",
+      "sources": [{"url": "https://www.reuters.com/business/energy/polands-orlen-buys-16-extra-crude-cargoes-amid-saudi-disruption-2026-09-16/", "title": "Poland's Orlen buys 16 extra crude cargoes amid Saudi disruption", "published_at": "2026-09-16T15:59:00Z"}]
+    },
+    {
+      "id": "oil-inference-2026-09-16-physical-flow",
+      "theme_id": "oil_refined_fuel_inflation",
+      "observed_at": "2026-09-16T16:10:00Z",
+      "kind": "inference",
+      "direction": "neutral",
+      "material": false,
+      "summary": "Alternative sourcing mitigates an acute crude shortage but is logistical substitution, not Saudi pipeline restoration or refined-fuel normalization.",
+      "sources": []
+    }
+  ],
+  "market_closes": []
+}
+
