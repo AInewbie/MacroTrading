@@ -20,6 +20,7 @@ def main() -> None:
     parser.add_argument("--state")
     parser.add_argument("--state-out")
     parser.add_argument("--json", action="store_true", dest="as_json")
+    parser.add_argument("--full-review", action="store_true", help="render every configured theme, not only alerts")
     args = parser.parse_args()
 
     payload = _load(args.input)
@@ -31,9 +32,8 @@ def main() -> None:
     )
     if args.state_out:
         Path(args.state_out).write_text(json.dumps(result["state"], indent=2) + "\n", encoding="utf-8")
-    print(json.dumps(result, indent=2) if args.as_json else render_markdown(result), end="")
+    print(json.dumps(result, indent=2) if args.as_json else render_markdown(result, full_review=args.full_review), end="")
 
 
 if __name__ == "__main__":
     main()
-

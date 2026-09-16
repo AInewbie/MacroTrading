@@ -1,0 +1,60 @@
+{
+  "evidence": [
+    {
+      "id": "oil-eia-2026-09-16-review", "theme_id": "oil_refined_fuel_inflation", "observed_at": "2026-09-16T14:30:00Z", "kind": "observed_fact", "direction": "contradict", "material": false,
+      "summary": "EIA reported a 0.6m-barrel crude draw, 0.8m gasoline build and 1.6m distillate build; distillate inventories remained 13% below their five-year average.",
+      "sources": [{"url": "https://ir.eia.gov/wpsr/wpsrsummary.pdf", "title": "EIA Weekly Petroleum Status Report", "published_at": "2026-09-16"}]
+    },
+    {
+      "id": "oil-orlen-2026-09-16-review", "theme_id": "oil_refined_fuel_inflation", "observed_at": "2026-09-16T15:59:00Z", "kind": "observed_fact", "direction": "support", "material": false,
+      "summary": "Orlen contracted 16 additional crude deliveries, about 16m barrels, to cover disrupted Saudi supply for September and October; alternative sourcing also mitigates acute shortage risk.",
+      "sources": [{"url": "https://www.reuters.com/business/energy/polands-orlen-buys-16-extra-crude-cargoes-amid-saudi-disruption-2026-09-16/", "title": "Orlen buys extra crude amid Saudi disruption", "published_at": "2026-09-16T15:59:00Z"}]
+    },
+    {
+      "id": "oil-hormuz-2026-09-16-review", "theme_id": "oil_refined_fuel_inflation", "observed_at": "2026-09-16T15:23:00Z", "kind": "observed_fact", "direction": "support", "material": false,
+      "summary": "Preliminary shipping data recorded four visible Hormuz transits on September 15, versus seven a day earlier and a ten-day average of 18.",
+      "sources": [{"url": "https://www.reuters.com/business/energy/oil-falls-us-crude-inventories-rise-despite-saudi-supply-concerns-2026-09-16/", "title": "Oil slips as Saudi Arabia offers more crude via Oman", "published_at": "2026-09-16"}]
+    },
+    {
+      "id": "ai-warnings-2026-09-14-review", "theme_id": "ai_capex_repricing", "observed_at": "2026-09-14T12:00:00Z", "kind": "observed_fact", "direction": "support", "material": false,
+      "summary": "AI-development slowdown calls coincided with a 5.9% decline in the PHLX semiconductor index, but did not constitute a company capex or supplier-guidance cut.",
+      "sources": [{"url": "https://www.reuters.com/business/ai-warnings-knock-nasdaq-futures-pressure-tech-stocks-2026-09-14/", "title": "AI warnings pressure technology stocks", "published_at": "2026-09-14"}]
+    },
+    {
+      "id": "ai-asml-outlook-2026-07-15-review", "theme_id": "ai_capex_repricing", "observed_at": "2026-07-15T06:00:00Z", "kind": "company_plan", "direction": "contradict", "material": false,
+      "summary": "ASML guided to EUR43-45bn of 2026 sales and described strong AI-driven demand; this is company guidance, not realized future revenue.",
+      "sources": [{"url": "https://www.asml.com/en/news/press-releases/2026/q2-2026-financial-results", "title": "ASML Q2 2026 financial results", "published_at": "2026-07-15"}]
+    },
+    {
+      "id": "japan-boj-july-2026-review", "theme_id": "japan_normalization", "observed_at": "2026-07-31T03:00:00Z", "kind": "policy_plan", "direction": "support", "material": false,
+      "summary": "The BOJ kept the overnight rate around 1.0% while retaining a conditional intention to raise rates; the second tightening test remains unmet until an official increase occurs.",
+      "sources": [{"url": "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/k260731a.pdf", "title": "BOJ Statement on Monetary Policy", "published_at": "2026-07-31"}]
+    },
+    {
+      "id": "japan-pricing-2026-09-16-review", "theme_id": "japan_normalization", "observed_at": "2026-09-16T04:00:00Z", "kind": "market_implied", "direction": "contradict", "material": false,
+      "summary": "LSEG data indicated an 80% probability of a September 18 hike and roughly two 25bp increases by end-January 2027, limiting the surprise value of a routine move.",
+      "sources": [{"url": "https://www.reuters.com/world/asia-pacific/dollar-girded-by-bets-us-hiking-cycle-2026-09-16/", "title": "Dollar supported by policy expectations", "published_at": "2026-09-16"}]
+    },
+    {
+      "id": "china-nbs-2026-09-15-review", "theme_id": "china_domestic_demand", "observed_at": "2026-09-15T02:00:00Z", "kind": "observed_fact", "direction": "support", "material": false,
+      "summary": "August retail sales grew 0.4% year over year, January-August fixed-asset investment fell 7.2% and property investment fell 19.9%; industrial output grew 5.2% as a material offset.",
+      "sources": [{"url": "https://www.stats.gov.cn/english/PressRelease/202609/t20260915_1965305.html", "title": "China NBS August economic data", "published_at": "2026-09-15"}]
+    },
+    {
+      "id": "china-pboc-2026-09-16-review", "theme_id": "china_domestic_demand", "observed_at": "2026-09-16T05:00:00Z", "kind": "policy_plan", "direction": "support", "material": false,
+      "summary": "PBOC Governor Pan described slower credit growth as a new normal because property and local-government credit demand is shrinking; he also said financing remains accommodative and high-tech/green sectors are resilient.",
+      "sources": [{"url": "https://www.reuters.com/world/china/chinas-slower-loan-growth-is-new-normal-central-bank-governor-says-2026-09-16/", "title": "China's slower loan growth is new normal, PBOC governor says", "published_at": "2026-09-16"}]
+    },
+    {
+      "id": "defense-germany-budget-2026-07-06-review", "theme_id": "europe_defense", "observed_at": "2026-07-06T10:00:00Z", "kind": "policy_plan", "direction": "support", "material": false,
+      "summary": "Germany's cabinet draft set the 2027 Defense Ministry budget at EUR109.7bn versus the 2026 target of EUR82.7bn; it remains a draft and excludes the separate special fund.",
+      "sources": [{"url": "https://www.bundesfinanzministerium.de/Content/EN/Pressemitteilungen/2026/2026-07-06-government-draft-2027-federal-budget.html", "title": "German government draft 2027 federal budget", "published_at": "2026-07-06"}]
+    },
+    {
+      "id": "defense-rheinmetall-2026-08-06-review", "theme_id": "europe_defense", "observed_at": "2026-08-06T06:00:00Z", "kind": "company_plan", "direction": "contradict", "material": false,
+      "summary": "Rheinmetall reported strong quarterly growth but cut its comparable 2026 sales range after a frigate-program setback, demonstrating delivery risk.",
+      "sources": [{"url": "https://www.reuters.com/business/aerospace-defense/rheinmetall-scales-down-2026-sales-outlook-scrapped-frigate-programme-2026-08-06/", "title": "Rheinmetall scales down 2026 sales outlook", "published_at": "2026-08-06"}]
+    }
+  ],
+  "market_closes": []
+}

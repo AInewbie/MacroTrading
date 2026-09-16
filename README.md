@@ -24,6 +24,12 @@ pip install -e .
 macrotrading --config config/live_themes.json --input examples/live_evidence_2026-09-16.json --state-out state.json
 ```
 
+Generate the complete five-theme review instead of alert-only output:
+
+```bash
+macrotrading --config config/live_themes.json --input examples/five_theme_review_2026-09-16.json --full-review
+```
+
 Run tests:
 
 ```bash

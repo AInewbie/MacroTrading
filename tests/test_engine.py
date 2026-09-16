@@ -30,6 +30,15 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(second["alerts"], [])
         self.assertEqual(render_markdown(second), "::SKIP_COMPLETION::\n")
 
+    def test_full_review_renders_all_themes_without_alerts(self):
+        raw = json.loads((ROOT / "examples/five_theme_review_2026-09-16.json").read_text())
+        events = [EvidenceEvent.from_dict(item) for item in raw["evidence"]]
+        result = AnalysisEngine(self.config).analyze(events)
+        self.assertEqual(result["alerts"], [])
+        report = render_markdown(result, full_review=True)
+        self.assertEqual(report.count("\n## "), 5)
+        self.assertIn("Paper/implementation risks", report)
+
     def test_market_threshold_requires_two_completed_closes(self):
         one = MarketClose.from_dict({"theme_id": "japan_normalization", "session_date": "2026-09-16", "proxy_close": 57.80, "proxy_return_pct": -1.0})
         first = AnalysisEngine(self.config).analyze([], [one])
@@ -51,4 +60,3 @@ class EngineTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

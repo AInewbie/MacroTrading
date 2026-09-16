@@ -66,12 +66,19 @@ class AnalysisEngine:
 
             results[theme_id] = {
                 "title": spec["title"],
+                "hypothesis": spec["hypothesis"],
                 "status": score_band(score) if score is not None else spec["status"],
                 "score": score,
                 "components": components,
                 "new_evidence": [self._event_dict(e) for e in new_events],
                 "market": market,
-                "invalidation_met": False,
+                "counterdrivers": list(spec.get("counterdrivers", [])),
+                "expression": dict(spec.get("expression", {})),
+                "fundamental_tests": list(spec.get("fundamental_tests", [])),
+                "catalysts": list(spec.get("catalysts", [])),
+                "invalidation": spec.get("invalidation", "Not specified."),
+                "paper_risks": list(spec.get("paper_risks", [])),
+                "invalidation_met": any(e.metadata.get("invalidation_met", False) for e in new_events),
                 "research_only": True,
             }
 
@@ -152,4 +159,3 @@ class AnalysisEngine:
             "summary": event.summary,
             "sources": [source.__dict__ for source in event.sources],
         }
-
