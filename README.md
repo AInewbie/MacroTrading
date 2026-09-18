@@ -4,7 +4,7 @@ An integrated local workspace for macro research, portfolio risk and paper decis
 
 ## Start
 
-The implementation is published on [`codex/integrated-research-workbench`](https://github.com/AInewbie/MacroTrading/tree/codex/integrated-research-workbench). Use that branch until the integration pull request is merged into `main`.
+The implementation is published on [`codex/integrated-research-workbench`](https://github.com/AInewbie/MacroTrading/tree/codex/integrated-research-workbench). Review [pull request #7](https://github.com/AInewbie/MacroTrading/pull/7). Use that branch until it is merged into `main`.
 
 Use Python 3.11+ with IANA timezone data installed (included in most Linux/macOS systems; on systems without it, install `tzdata` in your Python environment).
 
