@@ -1,0 +1,34 @@
+name: Research and paper portfolio checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Python regression and HTTP integration
+        run: python -m unittest discover -s tests -v
+        env:
+          PYTHONPATH: src
+      - name: JavaScript syntax and view contracts
+        run: |
+          npm run check
+          npm test
+        env:
+          PYTHON: python
+      - name: Command-line report
+        run: python -m macrotrading.cli --config config/live_themes.json --input examples/integrated_research_run.json --full-review --html-out /tmp/macrotrading-review.html
+        env:
+          PYTHONPATH: src

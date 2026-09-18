@@ -1,0 +1,292 @@
+{
+  "schema_version": 3,
+  "mode": "paper",
+  "demo": true,
+  "name": "Global Macro \u2014 synthetic paper portfolio",
+  "base_currency": "USD",
+  "cash": {
+    "USD": 1000000
+  },
+  "instruments": [
+    {
+      "id": "stk-aapl",
+      "symbol": "AAPL",
+      "name": "Apple",
+      "currency": "USD",
+      "model": "equity",
+      "price": 232.4,
+      "multiplier": 1,
+      "lot_size": 1,
+      "tick_size": 0.01,
+      "price_at": "2026-09-18T00:00:00Z",
+      "adv": 1000000,
+      "borrow_bps": 200,
+      "financing_bps": 400,
+      "tradable": true,
+      "beta": 1.18,
+      "risk_factor": "equity",
+      "factor_loadings": {
+        "equity": 1.18
+      }
+    },
+    {
+      "id": "idx-spx",
+      "symbol": "SPX",
+      "name": "S&P 500 Index",
+      "currency": "USD",
+      "model": "future",
+      "price": 5940,
+      "multiplier": 1,
+      "lot_size": 1,
+      "tick_size": 0.01,
+      "price_at": "2026-09-18T00:00:00Z",
+      "adv": 1000000,
+      "borrow_bps": 200,
+      "financing_bps": 400,
+      "tradable": true,
+      "beta": 1,
+      "risk_factor": "equity",
+      "factor_loadings": {
+        "equity": 1
+      },
+      "margin_rate": 0.15
+    },
+    {
+      "id": "bond-ust10",
+      "symbol": "UST10Y",
+      "name": "US Treasury 10Y",
+      "currency": "USD",
+      "model": "bond",
+      "price": 99.15,
+      "multiplier": 1000,
+      "lot_size": 1,
+      "tick_size": 0.01,
+      "price_at": "2026-09-18T00:00:00Z",
+      "adv": 1000000,
+      "borrow_bps": 200,
+      "financing_bps": 400,
+      "tradable": true,
+      "duration": 8.1,
+      "dv01": 82.5,
+      "risk_factor": "equity",
+      "factor_loadings": {},
+      "price_convention": "dirty_per_100"
+    },
+    {
+      "id": "fx-eurusd",
+      "symbol": "EURUSD",
+      "name": "Euro / US Dollar",
+      "currency": "USD",
+      "model": "fx",
+      "price": 1.105,
+      "multiplier": 1,
+      "lot_size": 1,
+      "tick_size": 0.0001,
+      "price_at": "2026-09-18T00:00:00Z",
+      "adv": 1000000,
+      "borrow_bps": 200,
+      "financing_bps": 400,
+      "tradable": true,
+      "risk_factor": "fx",
+      "factor_loadings": {
+        "fx": 1
+      }
+    },
+    {
+      "id": "fxo-eurusd",
+      "symbol": "EURUSD",
+      "name": "EURUSD 1.12 Call",
+      "currency": "USD",
+      "model": "option",
+      "price": 0.018,
+      "multiplier": 100000,
+      "lot_size": 1,
+      "tick_size": 0.0001,
+      "price_at": "2026-09-18T00:00:00Z",
+      "adv": 1000000,
+      "borrow_bps": 200,
+      "financing_bps": 400,
+      "tradable": true,
+      "delta": 0.43,
+      "gamma": 0.00012,
+      "vega": 420,
+      "expiry": "2026-12-18",
+      "strike": 1.12,
+      "underlying_price": 1.105,
+      "option_type": "Call",
+      "risk_factor": "fx",
+      "factor_loadings": {
+        "fx": 1
+      },
+      "margin_rate": 0.15
+    },
+    {
+      "id": "eqo-aapl",
+      "symbol": "AAPL",
+      "name": "Apple 240 Call",
+      "currency": "USD",
+      "model": "option",
+      "price": 12.8,
+      "multiplier": 100,
+      "lot_size": 1,
+      "tick_size": 0.01,
+      "price_at": "2026-09-18T00:00:00Z",
+      "adv": 1000000,
+      "borrow_bps": 200,
+      "financing_bps": 400,
+      "tradable": true,
+      "delta": 0.51,
+      "gamma": 0.012,
+      "vega": 31,
+      "expiry": "2026-12-18",
+      "strike": 240,
+      "underlying_price": 232.4,
+      "option_type": "Call",
+      "risk_factor": "equity",
+      "factor_loadings": {
+        "equity": 1
+      },
+      "margin_rate": 0.15
+    },
+    {
+      "id": "etf-tlt",
+      "symbol": "TLT",
+      "name": "iShares 20+ Year Treasury Bond ETF",
+      "currency": "USD",
+      "model": "bond",
+      "price": 91.7,
+      "multiplier": 1,
+      "lot_size": 1,
+      "tick_size": 0.01,
+      "price_at": "2026-09-18T00:00:00Z",
+      "adv": 1000000,
+      "borrow_bps": 200,
+      "financing_bps": 400,
+      "tradable": true,
+      "beta": 0.18,
+      "risk_factor": "equity",
+      "factor_loadings": {},
+      "price_convention": "dirty_per_100",
+      "duration": 16.0
+    },
+    {
+      "id": "etfo-tlt",
+      "symbol": "TLT",
+      "name": "TLT 95 Call",
+      "currency": "USD",
+      "model": "option",
+      "price": 3.25,
+      "multiplier": 100,
+      "lot_size": 1,
+      "tick_size": 0.01,
+      "price_at": "2026-09-18T00:00:00Z",
+      "adv": 1000000,
+      "borrow_bps": 200,
+      "financing_bps": 400,
+      "tradable": true,
+      "delta": 0.42,
+      "gamma": 0.028,
+      "vega": 14,
+      "expiry": "2026-12-18",
+      "strike": 95,
+      "underlying_price": 91.7,
+      "option_type": "Call",
+      "risk_factor": "equity",
+      "factor_loadings": {
+        "equity": 1
+      },
+      "margin_rate": 0.15
+    },
+    {
+      "id": "cmd-gold",
+      "symbol": "GC",
+      "name": "Gold future proxy",
+      "currency": "USD",
+      "model": "future",
+      "price": 2588,
+      "multiplier": 100,
+      "lot_size": 1,
+      "tick_size": 0.01,
+      "price_at": "2026-09-18T00:00:00Z",
+      "adv": 1000000,
+      "borrow_bps": 200,
+      "financing_bps": 400,
+      "tradable": true,
+      "risk_factor": "commodity",
+      "factor_loadings": {
+        "commodity": 1
+      },
+      "margin_rate": 0.15
+    }
+  ],
+  "positions": [
+    {
+      "instrument_id": "stk-aapl",
+      "quantity": 600,
+      "average_price": 220,
+      "target_weight": 0.12,
+      "theme_id": "ai_capex_repricing"
+    },
+    {
+      "instrument_id": "bond-ust10",
+      "quantity": 2,
+      "average_price": 98.4,
+      "target_weight": 0.2,
+      "theme_id": null
+    },
+    {
+      "instrument_id": "fx-eurusd",
+      "quantity": 180000,
+      "average_price": 1.09,
+      "target_weight": 0.16,
+      "theme_id": null
+    },
+    {
+      "instrument_id": "fxo-eurusd",
+      "quantity": 2,
+      "average_price": 0.015,
+      "target_weight": 0.04,
+      "theme_id": null
+    },
+    {
+      "instrument_id": "eqo-aapl",
+      "quantity": -12,
+      "average_price": 14.1,
+      "target_weight": -0.03,
+      "theme_id": "ai_capex_repricing"
+    },
+    {
+      "instrument_id": "etf-tlt",
+      "quantity": 1300,
+      "average_price": 89.2,
+      "target_weight": 0.1,
+      "theme_id": null
+    },
+    {
+      "instrument_id": "etfo-tlt",
+      "quantity": 18,
+      "average_price": 2.9,
+      "target_weight": 0.02,
+      "theme_id": null
+    },
+    {
+      "instrument_id": "cmd-gold",
+      "quantity": 1,
+      "average_price": 2510,
+      "target_weight": 0.14,
+      "theme_id": "oil_refined_fuel_inflation"
+    },
+    {
+      "instrument_id": "idx-spx",
+      "quantity": -20,
+      "average_price": 5800,
+      "target_weight": -0.09,
+      "theme_id": "ai_capex_repricing"
+    }
+  ],
+  "orders": [],
+  "fills": [],
+  "realized_pnl": {},
+  "fx_rates": [],
+  "policy": {}
+}

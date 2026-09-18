@@ -1,0 +1,44 @@
+[
+  {
+    "id": "fed-monetary",
+    "name": "Federal Reserve monetary policy",
+    "kind": "rss",
+    "url": "https://www.federalreserve.gov/feeds/press_monetary.xml",
+    "allowed_hosts": [
+      "www.federalreserve.gov"
+    ],
+    "source_group": "Federal Reserve",
+    "enabled": true,
+    "theme_ids": [
+      "oil_refined_fuel_inflation",
+      "japan_normalization"
+    ]
+  },
+  {
+    "id": "ecb-press",
+    "name": "ECB press releases and speeches",
+    "kind": "rss",
+    "url": "https://www.ecb.europa.eu/rss/press.html",
+    "allowed_hosts": [
+      "www.ecb.europa.eu"
+    ],
+    "source_group": "ECB",
+    "enabled": true,
+    "theme_ids": [
+      "europe_defense",
+      "oil_refined_fuel_inflation"
+    ]
+  },
+  {
+    "id": "ecb-fx",
+    "name": "ECB daily FX reference rates",
+    "kind": "ecb_fx",
+    "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+    "allowed_hosts": [
+      "www.ecb.europa.eu"
+    ],
+    "source_group": "ECB",
+    "enabled": true,
+    "theme_ids": []
+  }
+]
