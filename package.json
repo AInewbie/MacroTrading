@@ -1,0 +1,21 @@
+{
+  "name": "macrotrading-workbench",
+  "version": "0.6.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.js",
+    "check": "node scripts/check-js.mjs",
+    "format": "prettier --write public/js test",
+    "format:check": "prettier --check public/js test",
+    "test:browser": "playwright test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "prettier": "3.9.8"
+  }
+}

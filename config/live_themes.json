@@ -1,0 +1,372 @@
+{
+  "version": "watch-v1.1",
+  "as_of": "2026-09-16T16:30:00Z",
+  "themes": {
+    "oil_refined_fuel_inflation": {
+      "title": "Oil, refined-fuel scarcity and inflation",
+      "hypothesis": "Physical crude and refined-product disruption can sustain inflation and tighten financial conditions.",
+      "status": "Research review",
+      "components": null,
+      "counterdrivers": [
+        "Saudi rerouting and alternative procurement reduce immediate crude-shortage risk.",
+        "US product inventories increased and four-week gasoline/distillate demand was below year-earlier levels."
+      ],
+      "expression": {
+        "proxy": "Brent/WTI, diesel cracks and energy-versus-broad-equity dashboards",
+        "limits": "No single proxy cleanly separates crude disruption, refinery scarcity and Fed/USD effects."
+      },
+      "fundamental_tests": [
+        "Official physical-flow data show whether Saudi crude exports are restored, rerouted or lost.",
+        "Refined-product inventories, throughput and exports establish whether diesel scarcity is normalizing."
+      ],
+      "catalysts": [
+        "Federal Reserve decision and guidance on September 16, 2026.",
+        "Official Saudi pipeline/restoration and shipping-flow updates.",
+        "Weekly EIA inventories and subsequent inflation releases."
+      ],
+      "paper_risks": [
+        "Crude and refined products can diverge sharply.",
+        "Geopolitical headlines can gap markets outside liquid hours.",
+        "Without holdings, costs and option surfaces, no portfolio hedge or P&L can be validated."
+      ],
+      "decisions": [
+        "Approve separate crude-disruption and refined-fuel risk buckets rather than one combined oil position.",
+        "Define the evidence required for restoration and the maximum event-risk budget before considering activation.",
+        "Decide whether existing energy, inflation and USD exposure already duplicates this theme."
+      ],
+      "coverage": [
+        "Middle East infrastructure and restoration",
+        "Hormuz and Bab el-Mandeb shipping",
+        "Brent and WTI",
+        "diesel, refining throughput and margins",
+        "Russian and Gulf product exports",
+        "US inflation, Fed, Treasury yields and USD",
+        "energy versus broad equities",
+        "EIA forecasts and CFTC positioning"
+      ],
+      "invalidation": "Separate crude restoration from refined-fuel normalization; neither is established by rerouting alone.",
+      "evidence_max_age_days": 30,
+      "market_max_age_days": 5
+    },
+    "ai_capex_repricing": {
+      "title": "AI capital spending and semiconductor repricing",
+      "hypothesis": "Potential semiconductor underperformance; an investment slowdown is not established.",
+      "status": "Exploratory watch",
+      "components": {
+        "P": 0.5,
+        "F": 0.0,
+        "M": 0.0,
+        "C": 0.5,
+        "X": 0.5,
+        "R": 2.0
+      },
+      "counterdrivers": [
+        "ASML's latest verified outlook described strong AI-driven demand.",
+        "Political and industry resistance to mandatory development slowdowns weakens the policy-restriction channel."
+      ],
+      "expression": {
+        "proxy": "SMH/SPY dashboard",
+        "limits": "A dollar-for-dollar pair is not beta neutral; export controls and the hardware cycle are confounders."
+      },
+      "catalysts": [
+        "ASML Q3 results on October 14, 2026.",
+        "Official hyperscaler capex revisions or binding AI restrictions; dates remain unverified."
+      ],
+      "invalidation": "Suspend the bearish spending thesis after two relevant reporting rounds reaffirm or raise comparable capex/revenue plans with sustained AI demand; separately, two SMH/SPY closes at least 3% above the anchor invalidate the current bearish market setup.",
+      "paper_risks": [
+        "No qualifying capex or supplier-guidance cut has occurred.",
+        "The proxy embeds semiconductor beta and export-control exposure.",
+        "Liquidity, borrowing, hedge ratios and option costs have not been checked."
+      ],
+      "decisions": [
+        "Keep the theme exploratory until a qualifying company guidance cut or binding restriction occurs.",
+        "Decide whether SMH/SPY is acceptable as a dashboard only or whether a beta-adjusted basket is required.",
+        "Map existing technology and growth exposure before assigning any risk."
+      ],
+      "proxy": {
+        "symbol": "SMH/SPY",
+        "anchor_proxy": 542.11,
+        "anchor_benchmark": 757.44,
+        "threshold_pct": 3.0,
+        "hypothesis_direction": "negative",
+        "calendar": "XNYS_2026_2028",
+        "invalidation_threshold_pct": 3.0,
+        "daily_threshold_pct": 1
+      },
+      "fundamental_tests": [
+        "A named hyperscaler cuts comparable annual capex guidance by at least 5%.",
+        "ASML, Nvidia or TSMC cuts comparable forward revenue guidance by at least 5% and cites weaker AI demand or cancellations."
+      ],
+      "evidence_max_age_days": 30,
+      "market_max_age_days": 5
+    },
+    "japan_normalization": {
+      "title": "Japan monetary normalization and yen repricing",
+      "hypothesis": "Potential yen appreciation if BOJ policy exceeds expectations.",
+      "status": "Exploratory watch",
+      "components": {
+        "P": 1.0,
+        "F": 0.5,
+        "M": 0.0,
+        "C": 1.0,
+        "X": 0.5,
+        "R": 2.0
+      },
+      "counterdrivers": [
+        "A routine 25bp hike is already substantially anticipated.",
+        "Fiscal-funding uncertainty can weaken the yen even as Japanese yields rise."
+      ],
+      "expression": {
+        "proxy": "FXY with USD/JPY and US-Japan two-year spread cross-checks",
+        "limits": "FXY is a USD-priced proxy, not a carry portfolio, and fresh comparable yield-spread history remains incomplete."
+      },
+      "catalysts": [
+        "BOJ policy decision and guidance on September 18, 2026.",
+        "BOJ Summary of Opinions on October 1, 2026."
+      ],
+      "invalidation": "Suspend after two scheduled meetings without tightening and removal of the official tightening bias; separately, two FXY closes at least 2% below the anchor invalidate the bullish-yen market setup.",
+      "paper_risks": [
+        "Expected tightening may already be priced.",
+        "US rates and the dollar can dominate the yen response.",
+        "FXY tracking, liquidity, spreads and carry costs have not been fully documented."
+      ],
+      "decisions": [
+        "Predefine what BOJ outcome constitutes a positive surprise beyond a routine 25bp hike.",
+        "Choose whether the eventual portfolio expression is spot FX, FXY, options or a rates/FX combination only after costs are verified.",
+        "Measure existing Fed, USD and carry exposure before assigning Japan risk."
+      ],
+      "proxy": {
+        "symbol": "FXY",
+        "anchor_proxy": 59.13,
+        "threshold_pct": 2.0,
+        "hypothesis_direction": "positive",
+        "calendar": "XNYS_2026_2028",
+        "invalidation_threshold_pct": 2.0,
+        "daily_threshold_pct": 0.5
+      },
+      "fundamental_tests": [
+        "Official BOJ guidance retains a conditional tightening bias.",
+        "The BOJ implements at least a 25bp increase above the July 31 1.0% baseline."
+      ],
+      "evidence_max_age_days": 30,
+      "market_max_age_days": 5
+    },
+    "china_domestic_demand": {
+      "title": "China household-demand weakness versus industrial resilience",
+      "hypothesis": "Potential consumer-discretionary underperformance with stimulus-reversal risk.",
+      "status": "Research review",
+      "components": {
+        "P": 1.0,
+        "F": 1.0,
+        "M": 0.0,
+        "C": 0.5,
+        "X": 0.5,
+        "R": 1.0
+      },
+      "counterdrivers": [
+        "Industrial output and high-tech/green activity remain comparatively resilient.",
+        "Targeted household support or changing financing channels could improve pricing before reported consumption."
+      ],
+      "expression": {
+        "proxy": "CHIQ/MCHI dashboard",
+        "limits": "Overlapping holdings and sector weights make the ratio an imperfect household-demand hedge."
+      },
+      "catalysts": [
+        "Next official retail, investment and property releases; exact date remains unverified.",
+        "Any funded household-support or material property-support package."
+      ],
+      "invalidation": "Suspend when retail-sales growth reaches at least 3% in two consecutive monthly releases and property-investment growth improves to at least -14.9%; separately, two CHIQ/MCHI closes at least 3% above the anchor invalidate the bearish market setup.",
+      "paper_risks": [
+        "CHIQ is an offshore equity proxy rather than a retail-sales index.",
+        "Stimulus headlines can reprice equities before implementation details emerge.",
+        "Fund overlap, FX and trading costs have not been modeled."
+      ],
+      "decisions": [
+        "Decide whether CHIQ/MCHI overlap is acceptable or a cleaner consumer-versus-industrial basket is required.",
+        "Set the policy detail needed for a funded-stimulus reversal trigger.",
+        "Map China, emerging-market and global-growth exposure before adding the theme."
+      ],
+      "proxy": {
+        "symbol": "CHIQ/MCHI",
+        "anchor_proxy": 16.25,
+        "anchor_benchmark": 52.91,
+        "threshold_pct": 3.0,
+        "hypothesis_direction": "negative",
+        "calendar": "XNYS_2026_2028",
+        "invalidation_threshold_pct": 3.0,
+        "daily_threshold_pct": 1
+      },
+      "fundamental_tests": [
+        "Latest monthly retail-sales growth is below 1% year over year.",
+        "Latest year-to-date fixed-asset investment growth is negative."
+      ],
+      "evidence_max_age_days": 30,
+      "market_max_age_days": 5
+    },
+    "europe_defense": {
+      "title": "European defense spending converting into company revenue",
+      "hypothesis": "Potential European defense outperformance, conditional on delivery and valuation.",
+      "status": "Research review",
+      "components": {
+        "P": 1.0,
+        "F": 1.0,
+        "M": 0.5,
+        "C": 0.5,
+        "X": 0.5,
+        "R": 1.0
+      },
+      "counterdrivers": [
+        "Rheinmetall's cancellation-related guidance cut shows that larger budgets do not guarantee supplier delivery."
+      ],
+      "expression": {
+        "proxy": "WDEF/STOXX 600 dashboard",
+        "limits": "Matching European closes and price conventions are required; the EUR listing does not eliminate underlying currency exposure."
+      },
+      "catalysts": [
+        "Parliamentary disposition of Germany's 2027 budget; exact date remains unverified.",
+        "Funded contract awards and supplier guidance/cash-flow releases."
+      ],
+      "invalidation": "Reassess if the finalized comparable German ministry budget is below EUR98.73bn. Suspend the equity thesis if two current top-five holdings cut comparable revenue guidance by at least 5% and WDEF/STOXX 600 is at least 5% below baseline for two closes.",
+      "paper_risks": [
+        "Draft budgets and cooperation letters are not enacted appropriations or funded revenue.",
+        "Supplier execution, working capital and valuation can overwhelm spending headlines.",
+        "WDEF official-close continuity, holdings, spreads and hedging costs require verification."
+      ],
+      "decisions": [
+        "Require funded contract conversion and cash-flow evidence before treating budget headlines as revenue.",
+        "Verify WDEF holdings, official closes, liquidity and concentration before using it as the portfolio proxy.",
+        "Decide the valuation and drawdown limits that would override otherwise supportive spending evidence."
+      ],
+      "proxy": {
+        "symbol": "WDEF/STOXX600",
+        "anchor_proxy": 31.01,
+        "anchor_benchmark": 634.18,
+        "threshold_pct": 3.0,
+        "hypothesis_direction": "positive",
+        "calendar": "UNCONFIGURED_EU_LISTING",
+        "daily_threshold_pct": 1
+      },
+      "fundamental_tests": [
+        "Comparable German defense-ministry budget is at least 10% above the prior-year target.",
+        "Rheinmetall latest quarterly revenue grows at least 20% year over year."
+      ],
+      "evidence_max_age_days": 30,
+      "market_max_age_days": 5
+    }
+  },
+  "weights": {
+    "P": 25,
+    "F": 25,
+    "M": 20,
+    "C": 20,
+    "X": 10,
+    "R": -10
+  },
+  "alert_score_change": 10,
+  "calendars": {
+    "XNYS_2026": {
+      "timezone": "America/New_York",
+      "close_time": "16:00",
+      "valid_from": "2026-01-01",
+      "valid_to": "2026-12-31",
+      "holidays": [
+        "2026-01-01",
+        "2026-01-19",
+        "2026-02-16",
+        "2026-04-03",
+        "2026-05-25",
+        "2026-06-19",
+        "2026-07-03",
+        "2026-09-07",
+        "2026-11-26",
+        "2026-12-25"
+      ],
+      "early_closes": {
+        "2026-11-27": "13:00",
+        "2026-12-24": "13:00"
+      },
+      "source": "https://www.nyse.com/trade/hours-calendars"
+    },
+    "XNYS_2026_2028": {
+      "version": "nyse-published-2026-09-19",
+      "valid_from": "2026-01-01",
+      "valid_to": "2028-12-31",
+      "timezone": "America/New_York",
+      "close_time": "16:00",
+      "holidays": [
+        "2026-01-01",
+        "2026-01-19",
+        "2026-02-16",
+        "2026-04-03",
+        "2026-05-25",
+        "2026-06-19",
+        "2026-07-03",
+        "2026-09-07",
+        "2026-11-26",
+        "2026-12-25",
+        "2027-01-01",
+        "2027-01-18",
+        "2027-02-15",
+        "2027-03-26",
+        "2027-05-31",
+        "2027-06-18",
+        "2027-07-05",
+        "2027-09-06",
+        "2027-11-25",
+        "2027-12-24",
+        "2028-01-17",
+        "2028-02-21",
+        "2028-04-14",
+        "2028-05-29",
+        "2028-06-19",
+        "2028-07-04",
+        "2028-09-04",
+        "2028-11-23",
+        "2028-12-25"
+      ],
+      "early_closes": {
+        "2026-11-27": "13:00",
+        "2026-12-24": "13:00",
+        "2027-11-26": "13:00",
+        "2028-07-03": "13:00",
+        "2028-11-24": "13:00"
+      },
+      "source_url": "https://www.nyse.com/trade/hours-calendars",
+      "checked_at": "2026-09-19"
+    },
+    "ECB_REFERENCE_2026_2028": {
+      "version": "ecb-target-2026-09-19",
+      "valid_from": "2026-01-01",
+      "valid_to": "2028-12-31",
+      "timezone": "Europe/Brussels",
+      "close_time": "16:00",
+      "conventions": [
+        "reference_rate"
+      ],
+      "holidays": [
+        "2026-01-01",
+        "2026-04-03",
+        "2026-04-06",
+        "2026-05-01",
+        "2026-12-25",
+        "2026-12-26",
+        "2027-01-01",
+        "2027-03-26",
+        "2027-03-29",
+        "2027-05-01",
+        "2027-12-25",
+        "2027-12-26",
+        "2028-01-01",
+        "2028-04-14",
+        "2028-04-17",
+        "2028-05-01",
+        "2028-12-25",
+        "2028-12-26"
+      ],
+      "early_closes": {},
+      "source_url": "https://www.ecb.europa.eu/ecb/contacts/working-hours/html/index.en.html",
+      "checked_at": "2026-09-19",
+      "note": "16:00 local is an observation convention, not a claim about exact historical publication. known_at is actual retrieval."
+    }
+  }
+}

@@ -1,0 +1,44 @@
+import {
+  esc,
+  num,
+  money,
+  badge,
+  button,
+  metric,
+  table,
+  list,
+  bars,
+  lineChart,
+} from "./components.js";
+export function overview(d) {
+  const r = d.research,
+    a = d.portfolio,
+    themes = r ? Object.entries(r.themes) : [];
+  const blocked = themes.filter(([, t]) => t.lifecycle !== "watch");
+  const incomplete = themes.filter(
+    ([, t]) =>
+      t.coverage !== "current" || !["current"].includes(t.market.coverage),
+  );
+  const runs = [...d.runs].reverse().slice(-15);
+  return `<div class="hero"><div><small>THE DAILY DECISION WORKSPACE</small><h2>Evidence → conviction → portfolio impact</h2><p>${r ? `Latest review: ${esc(r.as_of)}. ${r.alerts.length} changes recorded. Every theme retains its accepted evidence and lifecycle.` : "Start with the historical five-theme example, or import a research input to create your first review."}</p></div>${r ? `<a class="button" href="/api/runs/${esc(r.run_id)}/html" target="_blank" rel="noopener">Open full HTML report ↗</a>` : button("Load historical example", "example", "", "primary")}</div>${r?.input_note ? `<div class="callout warn">${esc(r.input_note)}</div>` : ""}${a.demo ? '<div class="callout warn">The portfolio contains synthetic demonstration marks and positions. The research example is a dated historical input, not a live market refresh.</div>' : ""}<div class="metrics">${metric("Portfolio NAV", money(a.nav, a.base_currency), "Cash + cash assets + futures unrealized value")}${metric("Gross delta exposure", money(a.gross, a.base_currency), "Directional exposure, not a risk budget")}${metric("Themes needing data", num(incomplete.length, 0), "Missing, stale or partial evidence/market coverage")}${metric("Suspended / invalidated", num(blocked.length, 0), "Lifecycle takes priority over research scores")}</div><div class="grid wide"><article class="card"><div class="card-head"><div><h2>Theme decision board</h2><p>Research strength and data quality remain separate.</p></div>${button("Open themes", "navigate", "themes")}</div>${table(
+    ["Theme", "WATCH", "Evidence", "Market", "Status"],
+    themes.map(([id, t]) => [
+      `<a href="#themes">${esc(t.title)}</a>`,
+      num(t.score, 1),
+      badge(t.coverage),
+      badge(t.market.coverage),
+      badge(t.status, t.lifecycle),
+    ]),
+  )}</article><article class="card"><h2>What changed?</h2>${r?.alerts.length ? list(r.alerts.map((x) => `${x.type.replaceAll("_", " ")} · ${r.themes[x.theme_id].title}${x.from != null ? ` (${x.from} → ${x.to})` : ""}`)) : '<p class="muted">No new alert. Review coverage before interpreting this as stability.</p>'}<h3>Portfolio data checks</h3>${a.issues.length ? list(a.issues) : '<p class="positive">Current portfolio inputs pass the implemented checks.</p>'}</article></div><div class="grid"><article class="card"><h2>Score history</h2>${lineChart(Object.entries(d.config.themes).map(([id, t]) => ({ label: t.title, values: runs.map((run) => run.manifest.themes?.[id]?.score ?? null) })))}</article><article class="card"><h2>Scenario P&amp;L</h2><p class="muted">${esc(a.base_currency)} · supplied marks and first/second-order sensitivities.</p>${bars(d.scenarios.map((s) => ({ label: s.name, value: s.pnl })))}</article></div><article class="card"><h2>Source health</h2>${table(
+    ["Source", "Latest fetch", "State", "Items"],
+    d.sources.map((s) => {
+      const h = d.source_health.find((h) => h.source_id === s.id);
+      return [
+        esc(s.name),
+        esc(h?.at || "Not fetched"),
+        badge(h?.status || "Not fetched"),
+        num(h?.items ?? 0, 0),
+      ];
+    }),
+  )}</article>`;
+}

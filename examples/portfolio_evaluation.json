@@ -1,0 +1,135 @@
+{
+  "data_mode": "synthetic",
+  "base_currency": "USD",
+  "initial_capital": 100000,
+  "series": [
+    {
+      "id": "equity",
+      "currency": "USD",
+      "basis": "total_return_index",
+      "points": [
+        {
+          "at": "2026-09-10T20:00:00Z",
+          "value": 100
+        },
+        {
+          "at": "2026-09-11T20:00:00Z",
+          "value": 102
+        },
+        {
+          "at": "2026-09-14T20:00:00Z",
+          "value": 101
+        },
+        {
+          "at": "2026-09-15T20:00:00Z",
+          "value": 104
+        },
+        {
+          "at": "2026-09-16T20:00:00Z",
+          "value": 103
+        },
+        {
+          "at": "2026-09-17T20:00:00Z",
+          "value": 105
+        },
+        {
+          "at": "2026-09-18T20:00:00Z",
+          "value": 102
+        }
+      ]
+    },
+    {
+      "id": "bond",
+      "currency": "USD",
+      "basis": "total_return_index",
+      "points": [
+        {
+          "at": "2026-09-10T20:00:00Z",
+          "value": 100
+        },
+        {
+          "at": "2026-09-11T20:00:00Z",
+          "value": 101
+        },
+        {
+          "at": "2026-09-14T20:00:00Z",
+          "value": 102
+        },
+        {
+          "at": "2026-09-15T20:00:00Z",
+          "value": 101
+        },
+        {
+          "at": "2026-09-16T20:00:00Z",
+          "value": 100
+        },
+        {
+          "at": "2026-09-17T20:00:00Z",
+          "value": 100.5
+        },
+        {
+          "at": "2026-09-18T20:00:00Z",
+          "value": 101
+        }
+      ]
+    },
+    {
+      "id": "fx",
+      "currency": "USD",
+      "basis": "total_return_index",
+      "points": [
+        {
+          "at": "2026-09-10T20:00:00Z",
+          "value": 100
+        },
+        {
+          "at": "2026-09-11T20:00:00Z",
+          "value": 99
+        },
+        {
+          "at": "2026-09-14T20:00:00Z",
+          "value": 100
+        },
+        {
+          "at": "2026-09-15T20:00:00Z",
+          "value": 101
+        },
+        {
+          "at": "2026-09-16T20:00:00Z",
+          "value": 102
+        },
+        {
+          "at": "2026-09-17T20:00:00Z",
+          "value": 102
+        },
+        {
+          "at": "2026-09-18T20:00:00Z",
+          "value": 103
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "known_at": "2026-09-10T20:00:00Z",
+      "weights": {
+        "equity": 0.5,
+        "bond": 0.4,
+        "fx": 0.1
+      }
+    },
+    {
+      "known_at": "2026-09-15T20:00:00Z",
+      "weights": {
+        "equity": 0.3,
+        "bond": 0.5,
+        "fx": 0.2
+      }
+    }
+  ],
+  "benchmark_id": "equity",
+  "transaction_bps": 5,
+  "financing_bps": 300,
+  "borrow_bps": 200,
+  "periods_per_year": 252
+}

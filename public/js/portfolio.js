@@ -1,0 +1,203 @@
+import {
+  esc,
+  num,
+  money,
+  badge,
+  button,
+  metric,
+  table,
+  list,
+  json,
+  options,
+  field,
+  bars,
+} from "./components.js";
+export function portfolio(d) {
+  const a = d.portfolio,
+    w = d.workspace;
+  return `<div class="section-head"><div><h2>${esc(w.name)}</h2><p>${esc(w.base_currency)} reporting currency · ${w.positions.length} positions · ${w.instruments.length} instruments</p></div><div class="actions">${button("Add position", "position")}${button("Add instrument", "instrument")}${button("Import workspace", "import-workspace")}<a class="button" href="/api/export">Export workspace</a></div></div><div class="metrics">${metric("NAV", money(a.nav, a.base_currency), "Futures contribute unrealized value")}${metric("Cash", money(a.cash, a.base_currency), "Converted currency balances")}${metric("Unrealized P&L", money(a.unrealized_pnl, a.base_currency), "Open positions")}${metric("Realized P&L", money(a.realized_pnl, a.base_currency), "Closed positions less simulated fees")}</div>${a.issues.length ? `<div class="callout error">${list(a.issues)}</div>` : ""}<article class="card"><h2>Positions</h2>${table(
+    [
+      "Instrument",
+      "Model",
+      "Quantity",
+      "Mark",
+      "Market value",
+      "Delta exposure",
+      "Theme",
+      "Target",
+      "Action",
+    ],
+    a.rows.map((r) => [
+      esc(r.symbol),
+      esc(r.model),
+      num(r.quantity),
+      num(r.price, 4),
+      money(r.market_value, w.base_currency),
+      money(r.delta_exposure, w.base_currency),
+      esc(d.config.themes[r.theme_id]?.title || "Unassigned"),
+      r.target_weight == null ? "—" : num(r.target_weight * 100) + "%",
+      button("Edit", "position", r.instrument_id),
+    ]),
+    "min-table",
+  )}</article><article class="card"><div class="card-head"><div><h2>Instrument universe</h2><p>Explicit currencies, multipliers, price units and valuation models.</p></div>${button("Edit cash & FX", "cash-fx")}</div>${table(
+    [
+      "Instrument",
+      "Currency",
+      "Model",
+      "Price",
+      "Multiplier",
+      "Timestamp",
+      "Action",
+    ],
+    w.instruments.map((i) => [
+      `${esc(i.symbol)}<span class="sub">${esc(i.name)}</span>`,
+      esc(i.currency),
+      esc(i.model),
+      num(i.price, 4),
+      num(i.multiplier),
+      esc(i.price_at || "Missing"),
+      button("Edit", "instrument", i.id),
+    ]),
+    "min-table",
+  )}</article><article class="card"><div class="card-head"><div><h2>Read-only broker reconciliation</h2><p>Import a broker-neutral snapshot to compare quantities and cash. Nothing is traded or overwritten.</p></div>${button("Import broker snapshot", "import-broker")}</div>${
+    d.reconciliation
+      ? `<p>${esc(d.reconciliation.broker)} · ${esc(d.reconciliation.account)} · ${esc(d.reconciliation.as_of)} · ${badge(d.reconciliation.pass ? "Matched" : "Review", d.reconciliation.pass ? "pass" : "warning")}</p><p>Cash difference: ${d.reconciliation.cash_comparable ? money(d.reconciliation.cash_difference, w.base_currency) : "Not comparable across the supplied currency balances"}</p>${table(
+          ["Instrument", "Model qty", "Broker qty", "Difference", "State"],
+          d.reconciliation.rows.map((r) => [
+            esc(r.instrument_id),
+            num(r.model),
+            num(r.broker),
+            num(r.difference),
+            badge(r.status),
+          ]),
+        )}`
+      : '<p class="muted">No broker snapshot imported.</p>'
+  }</article>`;
+}
+export function risk(d, lastProposal = null) {
+  const a = d.portfolio,
+    w = d.workspace;
+  const factors = Object.keys(a.factor_exposures);
+  const p = lastProposal;
+  return `<div class="metrics">${metric("Rates DV01", num(a.dv01), "Reporting currency per +1 bp yield change")}${metric("Option vega", num(a.vega), "Reporting currency per +1 vol point")}${metric("Gamma P&L", num(a.gamma_1pct_pnl), "Second-order P&L for a 1% underlying move")}${metric("Estimated margin", money(a.margin, w.base_currency), "Configured rates; not broker margin")}</div><article class="card"><h2>Stress scenarios</h2>${bars(d.scenarios.map((s) => ({ label: s.name, value: s.pnl })))}${table(
+    ["Scenario", "Equity", "Rates", "FX", "Commodity", "Volatility", "P&L"],
+    d.scenarios.map((s) => [
+      esc(s.name),
+      s.equity == null ? "—" : num(s.equity * 100) + "%",
+      num(s.rates_bp) + " bp",
+      s.foreign_currency_shock == null
+        ? "By currency"
+        : num(s.foreign_currency_shock * 100) + "%",
+      s.commodity == null ? "—" : num(s.commodity * 100) + "%",
+      num(s.vol_points) + " points",
+      money(s.pnl, w.base_currency),
+    ]),
+  )}<p class="muted">Approximations from current marks and sensitivities. Full revaluation, correlation and broker margin are outside this model.</p></article><article class="card"><h2>Cross-theme factor overlap</h2><p class="muted">Dollar delta × user-specified factor loadings. DV01 and vega are reported separately above; these exposures are not inferred correlations.</p>${table(
+    ["Theme", ...factors],
+    Object.entries(a.theme_factor_exposures).map(([t, v]) => [
+      esc(d.config.themes[t]?.title || t),
+      ...factors.map((f) => money(v[f] || 0, w.base_currency)),
+    ]),
+  )}</article><article class="card"><h2>Assess a proposed expression</h2><p class="muted">Compare a user-selected quantity with the current portfolio, scenario budget and implementation constraints.</p>${proposalForm(d)}${
+    p
+      ? `<div class="callout ${p.eligible_for_review ? "" : "warn"}">${p.eligible_for_review ? "The implemented checks pass. Review the proposal before staging a paper order." : "Proposal needs attention."}${list(p.blockers)}</div><div class="metrics">${metric("Incremental worst loss", money(p.incremental_worst_loss, w.base_currency), "Across the supplied scenario set")}${metric("Theme risk budget", money(p.risk_budget, w.base_currency), "Scenario-loss budget")}${metric("Estimated round-trip cost", money(p.estimated_round_trip_cost, w.base_currency), `${p.holding_days} days; supplied carry and borrow assumptions`)}${metric("Gross after proposal", money(p.after.gross, w.base_currency), "Portfolio exposure after simulated fill")}</div>${table(
+          ["Scenario", "Before", "After", "Incremental"],
+          p.scenarios.map((s) => [
+            esc(s.name),
+            money(s.before, w.base_currency),
+            money(s.after, w.base_currency),
+            money(s.incremental, w.base_currency),
+          ]),
+        )}${checks(p.controls)}${p.eligible_for_review ? button("Stage this paper proposal", "stage-proposal", "", "primary") : ""}`
+      : ""
+  }</article>`;
+}
+export function checks(c) {
+  return `<details open><summary>Pre-trade checks</summary>${table(
+    ["Control", "Result", "Value", "Limit"],
+    c.checks.map((x) => [
+      esc(x.name),
+      badge(x.pass ? "Pass" : "Blocked", x.pass ? "pass" : "fail"),
+      typeof x.value === "number" ? num(x.value) : esc(x.value ?? ""),
+      num(x.limit),
+    ]),
+  )}</details>`;
+}
+export function proposalForm(d, tid = "") {
+  return `<form data-form="proposal"><div class="form-grid"><label>Instrument<select name="instrument_id">${options(d.workspace.instruments.map((i) => [i.id, i.symbol + " · " + i.model]))}</select></label><label>Theme<select name="theme_id">${options([["", "No theme association"], ...Object.entries(d.config.themes).map(([k, v]) => [k, v.title])], tid)}</select></label><label>Side<select name="side"><option>Buy</option><option>Sell</option></select></label>${field("Quantity", "quantity", 1, "number", 'min="0.000001" step="any" required')}${field("Scenario risk budget", "risk_budget", d.workspace.policy.risk_budget, "number", 'min="1" step="any" required')}${field("Holding days", "holding_days", d.workspace.policy.holding_days, "number", 'min="1" required')}</div><button class="primary">Calculate portfolio impact</button></form>`;
+}
+export function orders(d, rebalance = []) {
+  const w = d.workspace;
+  return `<div class="section-head"><div><h2>Paper order ledger</h2><p>Staging and execution are separate actions. Limits, cash, margin and risk are checked again at execution.</p></div><div class="actions">${button("Preview target rebalance", "rebalance")}${button("New paper order", "ticket", "", "primary")}</div></div><div class="callout">Limit orders remain unfilled when the simulated market price, including slippage, is outside the limit. Stop orders are not supported.</div>${
+    rebalance.length
+      ? `<article class="card"><h2>Rebalance preview</h2>${table(
+          ["Instrument", "Side", "Quantity", "Limit", "Action"],
+          rebalance.map((o, index) => [
+            esc(o.instrument_id),
+            esc(o.side),
+            num(o.quantity),
+            num(o.limit_price, 4),
+            button("Stage", "stage-rebalance", String(index)),
+          ]),
+        )}</article>`
+      : ""
+  }<article class="card">${table(
+    [
+      "Created",
+      "Instrument",
+      "Side / type",
+      "Quantity",
+      "Limit",
+      "Status",
+      "Action",
+    ],
+    [...w.orders]
+      .reverse()
+      .map((o) => [
+        esc(o.created_at),
+        esc(o.instrument_id),
+        esc(o.side + " / " + o.order_type),
+        num(o.quantity),
+        num(o.limit_price, 4),
+        badge(o.status),
+        ["Staged", "Unfilled"].includes(o.status)
+          ? `${button("Paper execute", "execute", o.id, "primary")} ${button("Cancel", "cancel-order", o.id)}`
+          : o.status === "Imported"
+            ? button("Create fresh order", "restage", o.id)
+            : "—",
+      ]),
+    "min-table",
+  )}</article><article class="card"><h2>Fills</h2>${table(
+    ["Filled at", "Order", "Quantity", "Price", "Commission"],
+    [...w.fills]
+      .reverse()
+      .map((f) => [
+        esc(f.filled_at),
+        esc(f.order_id),
+        num(f.quantity),
+        num(f.price, 6),
+        num(f.commission, 6),
+      ]),
+  )}</article>`;
+}
+export function ticketForm(d, initial = {}) {
+  return `<form data-form="order"><div class="form-grid"><label>Instrument<select name="instrument_id">${options(
+    d.workspace.instruments.map((i) => [
+      i.id,
+      i.symbol + " · " + num(i.price, 4) + " " + i.currency,
+    ]),
+    initial.instrument_id || "",
+  )}</select></label><label>Side<select name="side">${options(
+    [
+      ["Buy", "Buy"],
+      ["Sell", "Sell"],
+    ],
+    initial.side || "Buy",
+  )}</select></label>${field("Quantity", "quantity", initial.quantity ?? 1, "number", 'min="0.000001" step="any" required')}<label>Type<select name="order_type">${options(
+    [
+      ["Limit", "Limit"],
+      ["Market", "Market"],
+    ],
+    initial.order_type || "Limit",
+  )}</select></label>${field("Limit price (required for Limit)", "limit_price", initial.limit_price ?? "", "number", 'step="any" min="0"')}<label>Theme (optional)<select name="theme_id">${options([["", "Unassigned"], ...Object.entries(d.config.themes).map(([k, v]) => [k, v.title])], initial.theme_id || "")}</select></label></div><p class="muted">A staged order does not change your holdings. Select “Paper execute” after reviewing its controls.</p><button class="primary">Stage and check</button></form>`;
+}
