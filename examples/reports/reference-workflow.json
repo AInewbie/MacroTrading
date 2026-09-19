@@ -1,0 +1,954 @@
+{
+  "run": {
+    "id": "c1847030-9e33-4191-9e69-721115495814",
+    "as_of": "2026-09-19T20:02:21.369638Z",
+    "created_at": "2026-09-19T20:13:55.024948Z",
+    "manifest": {
+      "alerts": 2,
+      "app_version": "0.6.0",
+      "as_of": "2026-09-19T20:02:21.369638Z",
+      "code_hash": "7252e225a9b1aefab3674939ca4b1560750600b4b538b381d6c10ef8e63cdea2",
+      "config_hash": "9df463db788977754b30aa594b8e76dd07488e33672cc51fe7009ee04e157479",
+      "created_at": "2026-09-19T20:13:55.024948Z",
+      "evidence_added": 1,
+      "input_hash": "48bca301f9eb62762c2be219ddb0f03977be049a4f16410fcfb160ec054d10e5",
+      "label": "Verified public references and illustrative portfolio impact",
+      "portfolio_hash": "d30b3964d39a6fcf3b8d7bda02cc4880ba79ee7ec209b76b5f690c6bd9aa0d66",
+      "run_id": "c1847030-9e33-4191-9e69-721115495814",
+      "state_after_hash": "9da75428b43e895590afaba28a1370886e1296045e98ba8918f2fc66854f7546",
+      "state_before_hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "themes": {
+        "eurusd_watch": {
+          "coverage": "current",
+          "lifecycle": "watch",
+          "score": 40.0
+        }
+      }
+    },
+    "input": {
+      "config": {
+        "as_of": "2026-09-01T00:00:00Z",
+        "calendars": {
+          "ECB_REFERENCE_2026_2028": {
+            "checked_at": "2026-09-19",
+            "close_time": "16:00",
+            "conventions": [
+              "reference_rate"
+            ],
+            "early_closes": {},
+            "holidays": [
+              "2026-01-01",
+              "2026-04-03",
+              "2026-04-06",
+              "2026-05-01",
+              "2026-12-25",
+              "2026-12-26",
+              "2027-01-01",
+              "2027-03-26",
+              "2027-03-29",
+              "2027-05-01",
+              "2027-12-25",
+              "2027-12-26",
+              "2028-01-01",
+              "2028-04-14",
+              "2028-04-17",
+              "2028-05-01",
+              "2028-12-25",
+              "2028-12-26"
+            ],
+            "note": "16:00 local is an observation convention, not a claim about exact historical publication. known_at is actual retrieval.",
+            "source_url": "https://www.ecb.europa.eu/ecb/contacts/working-hours/html/index.en.html",
+            "timezone": "Europe/Brussels",
+            "valid_from": "2026-01-01",
+            "valid_to": "2028-12-31",
+            "version": "ecb-target-2026-09-19"
+          }
+        },
+        "themes": {
+          "eurusd_watch": {
+            "catalysts": [
+              "Future ECB/Fed decisions: dates and expectations not established in this example."
+            ],
+            "components": {
+              "C": 0,
+              "F": 0,
+              "M": 0,
+              "P": 1,
+              "R": 1,
+              "X": 0.5
+            },
+            "counterdrivers": [
+              "A short price trend does not establish a macro cause or forward edge.",
+              "Policy surprises and positioning can reverse the observed move."
+            ],
+            "decisions": [
+              "Review source freshness and whether this price pattern merits fundamental research.",
+              "Assess an illustrative EUR 25,000 hedge only after obtaining executable quotes and a reviewed mandate."
+            ],
+            "expression": {
+              "limits": "Reference-only instrument is explicitly non-tradable.",
+              "proxy": "EUR/USD reference series"
+            },
+            "fundamental_tests": [
+              "Obtain independently sourced policy-rate expectations and growth/inflation surprises before raising F."
+            ],
+            "hypothesis": "Investigate whether the observed September EUR/USD weakness persists.",
+            "invalidation": "Two adjacent reference observations above the adverse anchor threshold suspend the directional research.",
+            "paper_risks": [
+              "Reference observations cannot justify an executable order.",
+              "Portfolio balances and proposed size are illustrative."
+            ],
+            "proxy": {
+              "anchor_at": "2026-09-01T14:00:00Z",
+              "anchor_proxy": 1.159,
+              "calendar": "ECB_REFERENCE_2026_2028",
+              "convention": "reference_rate",
+              "currency": "USD",
+              "daily_threshold_pct": 0.1,
+              "hypothesis_direction": "negative",
+              "invalidation_threshold_pct": 3,
+              "series_id": "ECB-EURUSD",
+              "symbol": "EURUSD",
+              "threshold_pct": 3
+            },
+            "title": "EUR/USD weakness \u2014 monitored research"
+          }
+        },
+        "version": "reference-example-v0.6",
+        "weights": {
+          "C": 20,
+          "F": 25,
+          "M": 20,
+          "P": 25,
+          "R": -10,
+          "X": 10
+        }
+      },
+      "payload": {
+        "as_of": "2026-09-19T20:02:21.369638+00:00",
+        "evidence": [
+          {
+            "direction": "support",
+            "first_known_at": "2026-09-19T20:02:21.369638+00:00",
+            "id": "ecb-eurusd-observation-2026-09-18",
+            "kind": "observed_fact",
+            "material": true,
+            "metadata": {
+              "normalized_dataset_hash": "60c8c849aeee7d9ed34a2e940176082958f3ac3ee720b0bd98e0d6483b36c1a1",
+              "source_date_precision": "day; conservative publication timestamp equals retrieval"
+            },
+            "observed_at": "2026-09-19T20:02:21.369638+00:00",
+            "sources": [
+              {
+                "published_at": "2026-09-19T20:02:21.369638+00:00",
+                "retrieved_at": "2026-09-19T20:02:21.369638+00:00",
+                "source_group": "ECB",
+                "title": "ECB daily EUR/USD reference table",
+                "url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html"
+              }
+            ],
+            "summary": "ECB EUR/USD reference rates decreased from 1.1551 on 14 September to 1.1460 on 18 September 2026. This establishes an observed move, not its cause or persistence.",
+            "theme_id": "eurusd_watch"
+          }
+        ],
+        "label": "Verified public references and illustrative portfolio impact",
+        "market_closes": [
+          {
+            "close_at": "2026-09-01T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.159,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-01",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-02T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1578,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-02",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-03T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1615,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-03",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-04T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1622,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-04",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-07T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1622,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-07",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-08T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1614,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-08",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-09T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1652,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-09",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-10T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1616,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-10",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-11T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1592,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-11",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-14T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1551,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-14",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-15T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1539,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-15",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-16T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1537,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-16",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-17T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.1481,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-17",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          },
+          {
+            "close_at": "2026-09-18T14:00:00Z",
+            "completed": true,
+            "convention": "reference_rate",
+            "currency": "USD",
+            "known_at": "2026-09-19T20:02:21.369638+00:00",
+            "proxy_close": 1.146,
+            "series_id": "ECB-EURUSD",
+            "session_date": "2026-09-18",
+            "source_url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+            "theme_id": "eurusd_watch"
+          }
+        ],
+        "note": "Official ECB reference observations; illustrative EUR 100,000 and USD 100,000 cash balances, not user holdings. Data transcribed from the published page because direct XML acquisition was unavailable in the build environment. No executable prices or investment recommendation."
+      },
+      "portfolio": {
+        "base_currency": "USD",
+        "cash": {
+          "EUR": 100000.0,
+          "USD": 100000.0
+        },
+        "demo": false,
+        "fills": [],
+        "fx_rates": [
+          {
+            "as_of": "2026-09-18T14:00:00Z",
+            "from": "EUR",
+            "rate": 1.146,
+            "to": "USD"
+          }
+        ],
+        "instruments": [
+          {
+            "adv": 100000000.0,
+            "basis_sensitivity": {},
+            "borrow_bps": 0,
+            "currency": "USD",
+            "financing_bps": 0,
+            "funding_notional": 0,
+            "fx_base": "EUR",
+            "id": "eurusd-reference",
+            "lot_size": 1,
+            "model": "fx",
+            "multiplier": 1,
+            "name": "ECB EUR/USD reference (not executable)",
+            "price": 1.146,
+            "price_at": "2026-09-18T14:00:00Z",
+            "symbol": "EURUSD",
+            "tick_size": 0.0001,
+            "tradable": false
+          }
+        ],
+        "mode": "paper",
+        "name": "Illustrative currency balances \u2014 not user holdings",
+        "orders": [],
+        "policy": {
+          "allow_cash_overdraft": false,
+          "allow_short": true,
+          "commission_bps": 0,
+          "holding_days": 20.0,
+          "max_adv_fraction": 0.05,
+          "max_future_contracts": 20.0,
+          "max_fx_age_days": 5.0,
+          "max_gross_exposure": 2500000.0,
+          "max_mark_age_days": 5.0,
+          "max_net_exposure": 1500000.0,
+          "max_option_contracts": 100.0,
+          "max_order_notional": 300000.0,
+          "max_scenario_loss": 250000.0,
+          "require_limit_options": true,
+          "risk_budget": 25000.0,
+          "slippage_bps": 0
+        },
+        "positions": [],
+        "realized_pnl": {},
+        "schema_version": 3
+      },
+      "state_before": null
+    },
+    "result": {
+      "alerts": [
+        {
+          "event_id": "ecb-eurusd-observation-2026-09-18",
+          "theme_id": "eurusd_watch",
+          "type": "material_evidence"
+        },
+        {
+          "from": 20.0,
+          "theme_id": "eurusd_watch",
+          "to": 40.0,
+          "type": "score_change"
+        }
+      ],
+      "as_of": "2026-09-19T20:02:21.369638Z",
+      "config_version": "reference-example-v0.6",
+      "input_note": "Official ECB reference observations; illustrative EUR 100,000 and USD 100,000 cash balances, not user holdings. Data transcribed from the published page because direct XML acquisition was unavailable in the build environment. No executable prices or investment recommendation.",
+      "manifest": {
+        "alerts": 2,
+        "app_version": "0.6.0",
+        "as_of": "2026-09-19T20:02:21.369638Z",
+        "code_hash": "7252e225a9b1aefab3674939ca4b1560750600b4b538b381d6c10ef8e63cdea2",
+        "config_hash": "9df463db788977754b30aa594b8e76dd07488e33672cc51fe7009ee04e157479",
+        "created_at": "2026-09-19T20:13:55.024948Z",
+        "evidence_added": 1,
+        "input_hash": "48bca301f9eb62762c2be219ddb0f03977be049a4f16410fcfb160ec054d10e5",
+        "label": "Verified public references and illustrative portfolio impact",
+        "portfolio_hash": "d30b3964d39a6fcf3b8d7bda02cc4880ba79ee7ec209b76b5f690c6bd9aa0d66",
+        "run_id": "c1847030-9e33-4191-9e69-721115495814",
+        "state_after_hash": "9da75428b43e895590afaba28a1370886e1296045e98ba8918f2fc66854f7546",
+        "state_before_hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "themes": {
+          "eurusd_watch": {
+            "coverage": "current",
+            "lifecycle": "watch",
+            "score": 40.0
+          }
+        }
+      },
+      "new_evidence_count": 1,
+      "portfolio": {
+        "as_of": "2026-09-19T20:02:21.369638+00:00",
+        "base_currency": "USD",
+        "cash": 214600.0,
+        "complete": true,
+        "demo": false,
+        "dv01": 0,
+        "factor_exposures": {},
+        "gamma_1pct_pnl": 0,
+        "gross": 0,
+        "issues": [],
+        "margin": 0,
+        "nav": 214600.0,
+        "net": 0,
+        "realized_pnl": 0,
+        "rows": [],
+        "theme_factor_exposures": {},
+        "unrealized_pnl": 0,
+        "vega": 0
+      },
+      "run_id": "c1847030-9e33-4191-9e69-721115495814",
+      "scenarios": [
+        {
+          "commodity": -0.08,
+          "complete": true,
+          "equity": -0.12,
+          "foreign_currency_shock": -0.04,
+          "fx": -0.04,
+          "id": "risk_off",
+          "issues": [],
+          "method": "Local sensitivities plus currency translation, including cash; no full repricing",
+          "name": "Global risk-off",
+          "pnl": -4584.000000000004,
+          "rates_bp": -100.0,
+          "rows": [
+            {
+              "instrument_id": "cash-EUR",
+              "issues": [],
+              "kind": "cash",
+              "local_pnl": 0,
+              "pnl": -4584.000000000004,
+              "symbol": "EUR cash",
+              "theme_id": null,
+              "translation_pnl": -4584.000000000004
+            },
+            {
+              "instrument_id": "cash-USD",
+              "issues": [],
+              "kind": "cash",
+              "local_pnl": 0,
+              "pnl": 0.0,
+              "symbol": "USD cash",
+              "theme_id": null,
+              "translation_pnl": 0.0
+            }
+          ],
+          "vol_points": 10.0
+        },
+        {
+          "commodity": 0.16,
+          "complete": true,
+          "equity": -0.07,
+          "foreign_currency_shock": 0.02,
+          "fx": 0.02,
+          "id": "inflation",
+          "issues": [],
+          "method": "Local sensitivities plus currency translation, including cash; no full repricing",
+          "name": "Inflation resurgence",
+          "pnl": 2292.000000000002,
+          "rates_bp": 125.0,
+          "rows": [
+            {
+              "instrument_id": "cash-EUR",
+              "issues": [],
+              "kind": "cash",
+              "local_pnl": 0,
+              "pnl": 2292.000000000002,
+              "symbol": "EUR cash",
+              "theme_id": null,
+              "translation_pnl": 2292.000000000002
+            },
+            {
+              "instrument_id": "cash-USD",
+              "issues": [],
+              "kind": "cash",
+              "local_pnl": 0,
+              "pnl": 0.0,
+              "symbol": "USD cash",
+              "theme_id": null,
+              "translation_pnl": 0.0
+            }
+          ],
+          "vol_points": 6.0
+        },
+        {
+          "commodity": 0.1,
+          "complete": true,
+          "equity": 0.04,
+          "foreign_currency_shock": 0.09,
+          "fx": 0.09,
+          "id": "usd_down",
+          "issues": [],
+          "method": "Local sensitivities plus currency translation, including cash; no full repricing",
+          "name": "Broad USD decline",
+          "pnl": 10314.000000000007,
+          "rates_bp": -25.0,
+          "rows": [
+            {
+              "instrument_id": "cash-EUR",
+              "issues": [],
+              "kind": "cash",
+              "local_pnl": 0,
+              "pnl": 10314.000000000007,
+              "symbol": "EUR cash",
+              "theme_id": null,
+              "translation_pnl": 10314.000000000007
+            },
+            {
+              "instrument_id": "cash-USD",
+              "issues": [],
+              "kind": "cash",
+              "local_pnl": 0,
+              "pnl": 0.0,
+              "symbol": "USD cash",
+              "theme_id": null,
+              "translation_pnl": 0.0
+            }
+          ],
+          "vol_points": 2.0
+        },
+        {
+          "commodity": 0.0,
+          "complete": true,
+          "equity": 0.0,
+          "foreign_currency_shock": 0.0,
+          "fx": 0.0,
+          "id": "rates_up",
+          "issues": [],
+          "method": "Local sensitivities plus currency translation, including cash; no full repricing",
+          "name": "Rates +100 bp",
+          "pnl": 0.0,
+          "rates_bp": 100.0,
+          "rows": [
+            {
+              "instrument_id": "cash-EUR",
+              "issues": [],
+              "kind": "cash",
+              "local_pnl": 0,
+              "pnl": 0.0,
+              "symbol": "EUR cash",
+              "theme_id": null,
+              "translation_pnl": 0.0
+            },
+            {
+              "instrument_id": "cash-USD",
+              "issues": [],
+              "kind": "cash",
+              "local_pnl": 0,
+              "pnl": 0.0,
+              "symbol": "USD cash",
+              "theme_id": null,
+              "translation_pnl": 0.0
+            }
+          ],
+          "vol_points": 0.0
+        }
+      ],
+      "schema_version": 2,
+      "themes": {
+        "eurusd_watch": {
+          "active_evidence_ids": [
+            "ecb-eurusd-observation-2026-09-18"
+          ],
+          "as_of": "2026-09-19T20:02:21.369638Z",
+          "baseline_as_of": "2026-09-01T00:00:00Z",
+          "catalysts": [
+            "Future ECB/Fed decisions: dates and expectations not established in this example."
+          ],
+          "component_changes": [],
+          "components": {
+            "C": 0,
+            "F": 0,
+            "M": 1.0,
+            "P": 1,
+            "R": 1,
+            "X": 0.5
+          },
+          "counterdrivers": [
+            "A short price trend does not establish a macro cause or forward edge.",
+            "Policy surprises and positioning can reverse the observed move."
+          ],
+          "coverage": "current",
+          "decision_hash": "dc074465842a944d71a1e9e6c793db1f6d47a72d7e8bfe6a5edf0f79d2726367",
+          "decisions": [
+            "Review source freshness and whether this price pattern merits fundamental research.",
+            "Assess an illustrative EUR 25,000 hedge only after obtaining executable quotes and a reviewed mandate."
+          ],
+          "evidence": [
+            {
+              "component_updates": {},
+              "data_at": null,
+              "direction": "support",
+              "first_known_at": "2026-09-19T20:02:21.369638Z",
+              "id": "ecb-eurusd-observation-2026-09-18",
+              "kind": "observed_fact",
+              "material": true,
+              "metadata": {
+                "normalized_dataset_hash": "60c8c849aeee7d9ed34a2e940176082958f3ac3ee720b0bd98e0d6483b36c1a1",
+                "source_date_precision": "day; conservative publication timestamp equals retrieval"
+              },
+              "observed_at": "2026-09-19T20:02:21.369638Z",
+              "sources": [
+                {
+                  "content_hash": null,
+                  "published_at": "2026-09-19T20:02:21.369638Z",
+                  "retrieved_at": "2026-09-19T20:02:21.369638Z",
+                  "source_group": "ECB",
+                  "title": "ECB daily EUR/USD reference table",
+                  "url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html"
+                }
+              ],
+              "summary": "ECB EUR/USD reference rates decreased from 1.1551 on 14 September to 1.1460 on 18 September 2026. This establishes an observed move, not its cause or persistence.",
+              "supersedes": null,
+              "theme_id": "eurusd_watch"
+            }
+          ],
+          "evidence_age_days": 0.0,
+          "evidence_quality": 70.0,
+          "expression": {
+            "limits": "Reference-only instrument is explicitly non-tradable.",
+            "proxy": "EUR/USD reference series"
+          },
+          "expression_candidates": [],
+          "fundamental_tests": [
+            "Obtain independently sourced policy-rate expectations and growth/inflation surprises before raising F."
+          ],
+          "hypothesis": "Investigate whether the observed September EUR/USD weakness persists.",
+          "invalidation": "Two adjacent reference observations above the adverse anchor threshold suspend the directional research.",
+          "invalidation_met": false,
+          "lifecycle": "watch",
+          "lifecycle_reason": null,
+          "market": {
+            "as_of": "2026-09-18T14:00:00Z",
+            "breach_side": null,
+            "coverage": "current",
+            "eligible_sessions": 14,
+            "invalidates": false,
+            "issues": [],
+            "latest_session": "2026-09-18",
+            "m_component": 1.0,
+            "new_breach": false,
+            "relative_from_anchor_pct": -1.1217,
+            "return_observations": 13
+          },
+          "market_required": true,
+          "new_evidence": [
+            {
+              "component_updates": {},
+              "data_at": null,
+              "direction": "support",
+              "first_known_at": "2026-09-19T20:02:21.369638Z",
+              "id": "ecb-eurusd-observation-2026-09-18",
+              "kind": "observed_fact",
+              "material": true,
+              "metadata": {
+                "normalized_dataset_hash": "60c8c849aeee7d9ed34a2e940176082958f3ac3ee720b0bd98e0d6483b36c1a1",
+                "source_date_precision": "day; conservative publication timestamp equals retrieval"
+              },
+              "observed_at": "2026-09-19T20:02:21.369638Z",
+              "sources": [
+                {
+                  "content_hash": null,
+                  "published_at": "2026-09-19T20:02:21.369638Z",
+                  "retrieved_at": "2026-09-19T20:02:21.369638Z",
+                  "source_group": "ECB",
+                  "title": "ECB daily EUR/USD reference table",
+                  "url": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html"
+                }
+              ],
+              "summary": "ECB EUR/USD reference rates decreased from 1.1551 on 14 September to 1.1460 on 18 September 2026. This establishes an observed move, not its cause or persistence.",
+              "supersedes": null,
+              "theme_id": "eurusd_watch"
+            }
+          ],
+          "paper_risks": [
+            "Reference observations cannot justify an executable order.",
+            "Portfolio balances and proposed size are illustrative."
+          ],
+          "research_only": true,
+          "score": 40.0,
+          "score_band": "Exploratory watch",
+          "source_groups": 1,
+          "status": "Exploratory watch",
+          "title": "EUR/USD weakness \u2014 monitored research",
+          "uncertainties": ""
+        }
+      },
+      "warnings": []
+    }
+  },
+  "illustrative_proposal": {
+    "order": {
+      "id": "85cd9f29-ceb1-4d4e-b9cd-503c3fe38f5c",
+      "instrument_id": "eurusd-reference",
+      "side": "Sell",
+      "quantity": 25000.0,
+      "order_type": "Limit",
+      "limit_price": 1.1459000000000001,
+      "status": "Staged",
+      "created_at": "2026-09-19T20:02:21.369638+00:00",
+      "theme_id": "eurusd_watch",
+      "source": "Trade ticket"
+    },
+    "before": {
+      "base_currency": "USD",
+      "as_of": "2026-09-19T20:02:21.369638+00:00",
+      "rows": [],
+      "cash": 214600.0,
+      "nav": 214600.0,
+      "gross": 0,
+      "net": 0,
+      "unrealized_pnl": 0,
+      "realized_pnl": 0,
+      "dv01": 0,
+      "vega": 0,
+      "gamma_1pct_pnl": 0,
+      "margin": 0,
+      "factor_exposures": {},
+      "theme_factor_exposures": {},
+      "issues": [],
+      "complete": true,
+      "demo": false
+    },
+    "after": {
+      "base_currency": "USD",
+      "as_of": "2026-09-19T20:02:21.369638+00:00",
+      "rows": [
+        {
+          "instrument_id": "eurusd-reference",
+          "quantity": -25000.0,
+          "average_price": 1.146,
+          "theme_id": "eurusd_watch",
+          "symbol": "EURUSD",
+          "currency": "USD",
+          "model": "fx",
+          "price": 1.146,
+          "market_value": -28649.999999999996,
+          "unrealized_pnl": -0.0,
+          "delta_exposure": -28649.999999999996,
+          "dv01": 0.0,
+          "vega": 0.0,
+          "gamma_1pct_pnl": 0.0,
+          "margin": 0.0,
+          "issues": [],
+          "conversion_rate": 1.0
+        }
+      ],
+      "cash": 243250.0,
+      "nav": 214600.0,
+      "gross": 28649.999999999996,
+      "net": -28649.999999999996,
+      "unrealized_pnl": 0.0,
+      "realized_pnl": 0.0,
+      "dv01": 0.0,
+      "vega": 0.0,
+      "gamma_1pct_pnl": 0.0,
+      "margin": 0.0,
+      "factor_exposures": {},
+      "theme_factor_exposures": {},
+      "issues": [],
+      "complete": true,
+      "demo": false
+    },
+    "scenarios": [
+      {
+        "name": "Global risk-off",
+        "before": -4584.000000000004,
+        "after": -3438.0000000000027,
+        "incremental": 1146.000000000001
+      },
+      {
+        "name": "Inflation resurgence",
+        "before": 2292.000000000002,
+        "after": 1719.0000000000014,
+        "incremental": -573.0000000000005
+      },
+      {
+        "name": "Broad USD decline",
+        "before": 10314.000000000007,
+        "after": 7735.5000000000055,
+        "incremental": -2578.500000000002
+      },
+      {
+        "name": "Rates +100 bp",
+        "before": 0.0,
+        "after": 0.0,
+        "incremental": 0.0
+      }
+    ],
+    "incremental_worst_loss": 2578.500000000002,
+    "risk_budget": 25000.0,
+    "estimated_round_trip_cost": 0.0,
+    "holding_days": 20.0,
+    "controls": {
+      "pass": false,
+      "checks": [
+        {
+          "name": "Instrument tradable",
+          "pass": false,
+          "value": null,
+          "limit": null
+        },
+        {
+          "name": "Known notional",
+          "pass": true,
+          "value": null,
+          "limit": null
+        },
+        {
+          "name": "Order notional",
+          "pass": true,
+          "value": 28649.999999999996,
+          "limit": 300000.0
+        },
+        {
+          "name": "Complete current economics",
+          "pass": true,
+          "value": "",
+          "limit": null
+        },
+        {
+          "name": "Gross exposure",
+          "pass": true,
+          "value": 28649.999999999996,
+          "limit": 2500000.0
+        },
+        {
+          "name": "Net exposure",
+          "pass": true,
+          "value": -28649.999999999996,
+          "limit": 1500000.0
+        },
+        {
+          "name": "Cash available",
+          "pass": true,
+          "value": null,
+          "limit": null
+        },
+        {
+          "name": "Margin available",
+          "pass": true,
+          "value": 0.0,
+          "limit": 243250.0
+        },
+        {
+          "name": "Shorting permitted",
+          "pass": true,
+          "value": null,
+          "limit": null
+        },
+        {
+          "name": "ADV participation",
+          "pass": true,
+          "value": 25000.0,
+          "limit": 5000000.0
+        },
+        {
+          "name": "Scenario loss",
+          "pass": true,
+          "value": 3438.0000000000027,
+          "limit": 250000.0
+        }
+      ],
+      "notional": 28649.999999999996,
+      "after": {
+        "base_currency": "USD",
+        "as_of": "2026-09-19T20:02:21.369638+00:00",
+        "rows": [
+          {
+            "instrument_id": "eurusd-reference",
+            "quantity": -25000.0,
+            "average_price": 1.146,
+            "theme_id": "eurusd_watch",
+            "symbol": "EURUSD",
+            "currency": "USD",
+            "model": "fx",
+            "price": 1.146,
+            "market_value": -28649.999999999996,
+            "unrealized_pnl": -0.0,
+            "delta_exposure": -28649.999999999996,
+            "dv01": 0.0,
+            "vega": 0.0,
+            "gamma_1pct_pnl": 0.0,
+            "margin": 0.0,
+            "issues": [],
+            "conversion_rate": 1.0
+          }
+        ],
+        "cash": 243250.0,
+        "nav": 214600.0,
+        "gross": 28649.999999999996,
+        "net": -28649.999999999996,
+        "unrealized_pnl": 0.0,
+        "realized_pnl": 0.0,
+        "dv01": 0.0,
+        "vega": 0.0,
+        "gamma_1pct_pnl": 0.0,
+        "margin": 0.0,
+        "factor_exposures": {},
+        "theme_factor_exposures": {},
+        "issues": [],
+        "complete": true,
+        "demo": false
+      },
+      "worst_scenario_loss": 3438.0000000000027,
+      "commission": 0.0
+    },
+    "eligible_for_review": false,
+    "blockers": [],
+    "research_only": true,
+    "method": "User-specified quantity; deterministic scenario and constraint checks, not an optimizer"
+  },
+  "data_note": "Official ECB reference observations; illustrative EUR 100,000 and USD 100,000 cash balances, not user holdings. Data transcribed from the published page because direct XML acquisition was unavailable in the build environment. No executable prices or investment recommendation."
+}

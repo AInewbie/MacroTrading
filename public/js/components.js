@@ -1,18 +1,100 @@
-export const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-export const num=(v,d=2)=>v==null?'—':Number(v).toLocaleString('en-US',{maximumFractionDigits:d});
-export const pct=v=>v==null?'—':`${num(v*100)}%`;
-export const money=(v,c='USD')=>v==null?'Unavailable':new Intl.NumberFormat('en-US',{style:'currency',currency:c,maximumFractionDigits:0}).format(v);
-export const badge=(label,kind=label)=>`<span class="badge ${esc(kind)}">${esc(label)}</span>`;
-export const safeUrl=value=>{try{const u=new URL(value);return ['https:','http:'].includes(u.protocol)?u.href:'#';}catch{return '#';}};
-export const link=(label,url)=>`<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`;
-export const button=(label,action,id='',kind='secondary')=>`<button class="${esc(kind)}" data-action="${esc(action)}" data-id="${esc(id)}">${esc(label)}</button>`;
-export const metric=(label,value,note='')=>`<article class="metric"><span>${esc(label)}</span><strong>${value}</strong><small>${esc(note)}</small></article>`;
-export const table=(headers,rows,cls='')=>`<div class="scroll"><table class="${esc(cls)}"><thead><tr>${headers.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.length?rows.map(r=>`<tr>${r.map(c=>`<td>${c??'—'}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${headers.length}">No records yet.</td></tr>`}</tbody></table></div>`;
-export const list=items=>items?.length?`<ul>${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="muted">None recorded.</p>';
-export const json=value=>esc(JSON.stringify(value,null,2));
-export const options=(items,value='')=>items.map(([id,label])=>`<option value="${esc(id)}" ${id===value?'selected':''}>${esc(label)}</option>`).join('');
-export const field=(label,name,value='',type='text',extra='')=>`<label>${esc(label)}<input name="${esc(name)}" type="${esc(type)}" value="${esc(value)}" ${extra}></label>`;
-export function bars(items,{max=null}={}){if(!items.length)return '<p class="muted">No observations.</p>';const width=650,h=items.length*34+16,start=170,space=370;max=max??Math.max(1,...items.map(x=>Math.abs(x.value??0)));return `<svg class="chart" role="img" aria-label="Comparison chart" viewBox="0 0 ${width} ${h}">${items.map((x,i)=>`<text x="0" y="${i*34+23}">${esc(x.label.slice(0,25))}</text><rect class="bar ${x.value<0?'negative':''}" x="${start}" y="${i*34+9}" height="18" rx="3" width="${Math.abs(x.value??0)/max*space}"></rect><text x="${start+space+10}" y="${i*34+23}">${num(x.value,1)}</text>`).join('')}</svg>`;}
-export function lineChart(series){const clean=series.filter(s=>s.values.some(v=>v!=null));if(!clean.length)return '<p class="muted">Run reviews to build a score history.</p>';const colors=['#147f87','#c18b2c','#815bb1','#497fb9','#be6175'];const points=Math.max(...clean.map(s=>s.values.length));return `<svg class="chart" role="img" aria-label="WATCH score history from zero to one hundred" viewBox="0 0 700 260"><line class="axis" x1="35" y1="15" x2="35" y2="205"/><line class="axis" x1="35" y1="205" x2="680" y2="205"/><text x="2" y="24">100</text><text x="15" y="206">0</text>${clean.map((s,i)=>{const p=s.values.map((v,j)=>v==null?null:`${35+j*640/Math.max(points-1,1)},${205-v*1.9}`).filter(Boolean).join(' ');return `<polyline class="series" stroke="${colors[i%5]}" points="${p}"/><text x="${10+(i%3)*230}" y="${228+Math.floor(i/3)*18}" fill="${colors[i%5]}">${esc(s.label.slice(0,28))}</text>`;}).join('')}</svg>`;}
-export function csv(headers,rows){const cell=x=>{let s=String(x??'');if(typeof x==='string'&&/^[\s]*[=+\-@]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"';};return [headers,...rows].map(r=>r.map(cell).join(',')).join('\r\n');}
-export function download(name,value,type='application/json'){const data=typeof value==='string'?value:JSON.stringify(value,null,2);const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+export const esc = (value) =>
+  String(value ?? "").replace(
+    /[&<>"']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ],
+  );
+export const num = (v, d = 2) =>
+  v == null
+    ? "—"
+    : Number(v).toLocaleString("en-US", { maximumFractionDigits: d });
+export const pct = (v) => (v == null ? "—" : `${num(v * 100)}%`);
+export const money = (v, c = "USD") =>
+  v == null
+    ? "Unavailable"
+    : new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: c,
+        maximumFractionDigits: 0,
+      }).format(v);
+export const badge = (label, kind = label) =>
+  `<span class="badge ${esc(kind)}">${esc(label)}</span>`;
+export const safeUrl = (value) => {
+  try {
+    const u = new URL(value);
+    return ["https:", "http:"].includes(u.protocol) ? u.href : "#";
+  } catch {
+    return "#";
+  }
+};
+export const link = (label, url) =>
+  `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`;
+export const button = (label, action, id = "", kind = "secondary") =>
+  `<button class="${esc(kind)}" data-action="${esc(action)}" data-id="${esc(id)}">${esc(label)}</button>`;
+export const metric = (label, value, note = "") =>
+  `<article class="metric"><span>${esc(label)}</span><strong>${value}</strong><small>${esc(note)}</small></article>`;
+export const table = (headers, rows, cls = "") =>
+  `<div class="scroll"><table class="${esc(cls)}"><thead><tr>${headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.length ? rows.map((r) => `<tr>${r.map((c) => `<td>${c ?? "—"}</td>`).join("")}</tr>`).join("") : `<tr><td colspan="${headers.length}">No records yet.</td></tr>`}</tbody></table></div>`;
+export const list = (items) =>
+  items?.length
+    ? `<ul>${items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`
+    : '<p class="muted">None recorded.</p>';
+export const json = (value) => esc(JSON.stringify(value, null, 2));
+export const options = (items, value = "") =>
+  items
+    .map(
+      ([id, label]) =>
+        `<option value="${esc(id)}" ${id === value ? "selected" : ""}>${esc(label)}</option>`,
+    )
+    .join("");
+export const field = (label, name, value = "", type = "text", extra = "") =>
+  `<label>${esc(label)}<input name="${esc(name)}" type="${esc(type)}" value="${esc(value)}" ${extra}></label>`;
+export function bars(items, { max = null } = {}) {
+  if (!items.length) return '<p class="muted">No observations.</p>';
+  const width = 650,
+    h = items.length * 34 + 16,
+    start = 170,
+    space = 370;
+  max = max ?? Math.max(1, ...items.map((x) => Math.abs(x.value ?? 0)));
+  return `<svg class="chart" role="img" aria-label="Comparison chart" viewBox="0 0 ${width} ${h}">${items.map((x, i) => `<text x="0" y="${i * 34 + 23}">${esc(x.label.slice(0, 25))}</text><rect class="bar ${x.value < 0 ? "negative" : ""}" x="${start}" y="${i * 34 + 9}" height="18" rx="3" width="${(Math.abs(x.value ?? 0) / max) * space}"></rect><text x="${start + space + 10}" y="${i * 34 + 23}">${num(x.value, 1)}</text>`).join("")}</svg>`;
+}
+export function lineChart(series) {
+  const clean = series.filter((s) => s.values.some((v) => v != null));
+  if (!clean.length)
+    return '<p class="muted">Run reviews to build a score history.</p>';
+  const colors = ["#147f87", "#c18b2c", "#815bb1", "#497fb9", "#be6175"];
+  const points = Math.max(...clean.map((s) => s.values.length));
+  return `<svg class="chart" role="img" aria-label="WATCH score history from zero to one hundred" viewBox="0 0 700 260"><line class="axis" x1="35" y1="15" x2="35" y2="205"/><line class="axis" x1="35" y1="205" x2="680" y2="205"/><text x="2" y="24">100</text><text x="15" y="206">0</text>${clean
+    .map((s, i) => {
+      const p = s.values
+        .map((v, j) =>
+          v == null
+            ? null
+            : `${35 + (j * 640) / Math.max(points - 1, 1)},${205 - v * 1.9}`,
+        )
+        .filter(Boolean)
+        .join(" ");
+      return `<polyline class="series" stroke="${colors[i % 5]}" points="${p}"/><text x="${10 + (i % 3) * 230}" y="${228 + Math.floor(i / 3) * 18}" fill="${colors[i % 5]}">${esc(s.label.slice(0, 28))}</text>`;
+    })
+    .join("")}</svg>`;
+}
+export function csv(headers, rows) {
+  const cell = (x) => {
+    let s = String(x ?? "");
+    if (typeof x === "string" && /^[\s]*[=+\-@]/.test(s)) s = "'" + s;
+    return '"' + s.replaceAll('"', '""') + '"';
+  };
+  return [headers, ...rows].map((r) => r.map(cell).join(",")).join("\r\n");
+}
+export function download(name, value, type = "application/json") {
+  const data =
+    typeof value === "string" ? value : JSON.stringify(value, null, 2);
+  const url = URL.createObjectURL(new Blob([data], { type }));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}

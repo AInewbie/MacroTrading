@@ -19,11 +19,19 @@ jobs:
         with:
           node-version: '22'
       - name: Python regression and HTTP integration
-        run: python -m unittest discover -s tests -v
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m ruff check --select F src tests scripts run.py
+          python -m ruff format --check src tests scripts run.py
+          python -m coverage run --source=macrotrading -m unittest discover -s tests -v
+          python -m coverage report -m
+          python -m coverage xml -o coverage.xml
         env:
           PYTHONPATH: src
       - name: JavaScript syntax and view contracts
         run: |
+          npm ci
+          npm run format:check
           npm run check
           npm test
         env:
@@ -32,3 +40,28 @@ jobs:
         run: python -m macrotrading.cli --config config/live_themes.json --input examples/integrated_research_run.json --full-review --html-out /tmp/macrotrading-review.html
         env:
           PYTHONPATH: src
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.python }}
+          path: coverage.xml
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-workflow-results
+          path: |
+            playwright-report/
+            test-results/

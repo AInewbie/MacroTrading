@@ -1,84 +1,80 @@
-# MacroTrading v0.5
+# MacroTrading v0.6
 
-An integrated local workspace for macro research, portfolio risk and paper decisions. Python owns research, accounting and persistence; the browser uses the same API and stored snapshots. **Paper only.** There are no live broker execution routes.
+A local macro research and paper-portfolio workbench: discover and challenge themes, review sources and market observations, inspect portfolio consequences, and preserve reproducible decisions.
+
+**[Product blueprint](docs/BLUEPRINT.md)** · **[User guide](docs/user-guide.html)** · **[Release and validation record](docs/RELEASE-v0.6.md)**
 
 ## Start
 
-The implementation is published on [`codex/integrated-research-workbench`](https://github.com/AInewbie/MacroTrading/tree/codex/integrated-research-workbench). Review [pull request #7](https://github.com/AInewbie/MacroTrading/pull/7). Use that branch until it is merged into `main`.
-
-Use Python 3.11+ with IANA timezone data installed (included in most Linux/macOS systems; on systems without it, install `tzdata` in your Python environment).
-
 ```bash
-git clone --branch codex/integrated-research-workbench https://github.com/AInewbie/MacroTrading.git
+git clone https://github.com/AInewbie/MacroTrading.git
 cd MacroTrading
 python3 run.py
 ```
 
-Open **http://127.0.0.1:4173**. Python's standard library is sufficient at runtime when timezone data is available. Node is optional: `node server.mjs` starts the same Python server. `python3 run.py --port 4174 --data-dir ./var-second` creates an isolated workspace.
+Open **http://127.0.0.1:4173**. Keep the terminal running. Python 3.11+ with IANA timezone data is sufficient; install `tzdata` if your operating system does not provide it. Node is optional at runtime.
 
-**Read [the full feature and user guide](docs/user-guide.html)** (download/open the HTML, or choose *Features & user guide* inside the app). It contains a first-run walkthrough, every screen, data formats, valuation units, source setup, recovery and known limits.
+For an isolated workspace:
 
-## What changed
+```bash
+python3 run.py --port 4174 --data-dir ./var-second
+```
 
-- Consolidated the browser and Python prototypes into a single application, SQLite database and domain model.
-- Accepted evidence and component changes persist. Invalidation overrides scores. Explicit resume decisions and superseding evidence retain provenance.
-- Market confirmation uses distinct adjacent eligible sessions, a versioned close calendar, matching timestamps/currencies and validated returns. Missing data remain unavailable.
-- Corrected cash, average cost, realized P&L, futures NAV, FX conversion, limit execution, repeat submission and zero-position rebalance behavior.
-- Added source acquisition and a manual evidence inbox, source-body hashes, immutable run HTML/JSON, a decision journal and a hash-chained action log.
-- Added portfolio scenarios, option sensitivities, rates DV01, factor overlap, implementation constraints, expression proposals and estimated costs.
-- Added chronological event replay and a single-expression paper backtest with next-observation execution and modeled costs.
-- Added editable risk/scoring settings, research history, full data tables, ranking, import/export, explicit legacy migration and state recovery.
-- Optional OpenAI extraction proposes source-cited claims for review. It cannot accept evidence, change scores or create orders.
+The default portfolio is explicitly synthetic. Review/import your holdings and instrument economics, then turn off **Synthetic demo input mode** in Settings. Starting the app makes no provider requests. There is no scheduler or live brokerage execution.
 
-## First run
+## What is delivered
 
-1. Select **Load historical example** before committing a current-dated review.
-2. Inspect **Research themes**, **Portfolio risk**, **All data** and the saved HTML report.
-3. The portfolio is **synthetic**, and the dated research fixture's claims and prices are **not independently verified**. They demonstrate software behavior.
-4. For your own work, import/edit your holdings and economics, turn off **Synthetic demo input mode** in Settings, and review the resulting data issues.
-5. Refresh approved sources, then review candidates individually. No source is fetched automatically at startup.
+- Thirteen dashboard views sharing one calculation and persistence layer.
+- Source review, immutable evidence provenance, WATCH prioritization, contradictions and persistent lifecycle decisions.
+- Offline headline screening and optional AI proposals for **new** themes, with citations, counterarguments and configured instrument expressions. Acceptance is a separate, unscored human decision.
+- An official ECB reference-FX history adapter, pair conversion, visible availability/freshness, reviewed proxy acceptance and published 2026–2028 calendars.
+- Multi-asset paper accounting, foreign-currency cash/asset translation, rates/key-rate, spread, basis and funding stress, and before/after expression analysis.
+- Version-checked state, paper-order idempotency, recoverable exports and hash-linked audit events.
+- Evidence replay and portfolio evaluation with benchmark, Sharpe/Sortino/Calmar, attribution, carry and transaction costs.
+- Portable HTML/JSON run archives and an implementation-independent blueprint for rebuilding the product in another stack.
 
-The supplied XNYS calendar covers **2026 only**. Other venues/years require explicit verified calendars. The European defense proxy remains unconfigured because a matching listing/calendar has not been established.
+## A practical workflow
+
+1. **Sources & evidence:** refresh approved publishers and review candidates.
+2. **Theme discovery:** screen headlines or ask the configured AI for proposals; inspect evidence and accept/reject explicitly.
+3. **Research themes:** define a score baseline, fundamental tests, catalyst and invalidation.
+4. **Market data:** fetch a reference pair, review the proxy and accept the history.
+5. **Portfolio risk:** compare a user-sized expression with existing holdings, scenarios and implementation limits.
+6. **Run archive:** open the exact saved report and input/result JSON.
+
+ECB observations are daily reference rates for research/reporting, **not executable quotes**. Broad equity/bond/futures/options feeds are still provider extensions. Missing inputs remain unavailable.
+
+## Reproduce the public-data example
+
+```bash
+python3 scripts/run_reference_example.py
+```
+
+This produces `var/reference-example/reference-workflow.html` and JSON using a labelled transcription of official ECB observations and **illustrative cash balances**, not your portfolio. It requires no network or API key. The reference-only expression remains blocked from paper execution.
 
 ## Optional AI
 
-Set `OPENAI_API_KEY` and `OPENAI_MODEL` in the server's environment and restart. No model is selected automatically. The app does not load `.env` files. Click **Propose claims with AI** after selecting 1–10 pending candidates. This sends their titles/summaries and theme definitions to OpenAI; provider billing applies. The implementation limits output to 2,000 tokens and requests to five attempts per day, not a guaranteed currency spending cap. Manual research works without credentials.
+Set `OPENAI_API_KEY` and `OPENAI_MODEL` in the server environment and restart. No model is chosen implicitly; `.env` files are not loaded. Explicit AI actions send selected source summaries, theme definitions and, for discovery, instrument descriptions. Keys are never sent to the browser or included in exports.
 
-## Data and recovery
+Extraction and discovery share five attempted calls per day; output caps are 2,000 and 4,000 tokens respectively. Provider charges apply; these caps are not a monetary spending guarantee. AI cannot accept evidence, set component scores, change risk appetite, size positions or execute orders.
 
-The default database is `var/macrotrading.sqlite3`. Browser storage is not the authoritative store. Failed writes roll back; stale browser versions receive a conflict and must reload.
+## Validation and development
 
-- **Workspace export**: instruments, holdings, cash, policy and paper history.
-- **State backup**: current accepted research, workspace and configuration. Restoring rebuilds a run report; imported unfilled orders require fresh staging.
-- **Full archive**: stop the server, then copy the complete `var` directory, including any SQLite sidecar files. This retains source bodies, immutable reports and action history.
-
-Original browser v1/v2 workspace exports use the explicit import path. Their old fills are retained under `legacy_history` and never replayed. Supply missing economics and reconcile the resulting balances. Old Python v1 alert state cannot reconstruct accepted evidence; rebuild from archived inputs.
-
-## Verification
+See [CONTRIBUTING](CONTRIBUTING.md) for setup. GitHub Actions runs Python 3.11/3.12 regression/HTTP checks, coverage, JavaScript view checks, formatting/static checks, CLI reporting and desktop/mobile browser workflows.
 
 ```bash
-PYTHONPATH=src python3 -m unittest discover -s tests -v
+PYTHONPATH=src python3 -m unittest discover -s tests
+npm ci
 npm run check
 npm test
 ```
 
-Python tests cover research persistence, timing/calendar gates, cash and derivative accounting, idempotency, source quarantine, migration, replay, mocked AI, backup/restart, conflicts and local HTTP guards. JavaScript tests cover output escaping, CSV formula protection and rendering every view against fresh/populated API snapshots. GitHub Actions runs these checks with Python 3.11 and 3.12 and Node 22.
+Tests use explicit fixtures for provider/model responses. A parser test is not evidence of live connectivity. See the [release record](docs/RELEASE-v0.6.md) for observed environment restrictions and actual validation results.
 
-Browser automation was not executed in the implementation environment: a browser binary was unavailable and its download failed. Live source access and paid AI requests also remain environment-dependent; their parser and adapter tests use fixtures/mocks.
+## Data and limits
 
-## Command-line research reports
+State lives in `var/macrotrading.sqlite3`. Browser storage is not authoritative. Export a workspace or state backup from Settings. For a complete archive, stop the application and copy the full `var` directory, including SQLite sidecars.
 
-```bash
-PYTHONPATH=src python3 -m macrotrading.cli \
-  --config config/live_themes.json \
-  --input examples/integrated_research_run.json \
-  --full-review --html-out review.html --state-out state.json
-```
+WATCH is a prioritization rubric, not probability or expected return. Stress calculations use supplied sensitivities, not full repricing. Portfolio evaluation uses aligned base-currency indices, not raw derivative settlement. No optimizer, validated investment edge, live broker integration or multi-user hosting is included.
 
-Pass `--state state.json` on later chronological runs; `--json` emits the complete result. The CLI is a standalone research tool: it does not update the web app's SQLite database or include its portfolio.
-
-## Scope
-
-This is a single-user research/paper workbench. WATCH is a prioritisation rubric, not expected return or calibrated probability. Evidence quality is a source-breadth/freshness heuristic. Portfolio stress is an approximation using user-supplied sensitivities, not full option repricing or broker margin. No position optimizer, validated trading edge, scheduler, corporate-action service, cross-venue market feed, live broker integration or multi-user hosting is included.
-
-See [architecture](docs/architecture.md), [data contracts](docs/data-contracts.md) and [the user guide](docs/user-guide.html) before extending or operating the app.
+The [blueprint](docs/BLUEPRINT.md) states original objectives, design decisions, equations, units, data contracts, workflows, acceptance examples and remaining work. The canonical consolidated release is on `main`; earlier branches are retained or archived for history, not alternative application runtimes.
