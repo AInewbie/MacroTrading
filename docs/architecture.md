@@ -2,6 +2,8 @@
 
 MacroTrading v0.6 consolidates the previous browser-only paper workbench and Python research branch, and adds reviewed discovery, reference-data acquisition and portfolio evaluation. Python is the sole calculation authority. The modular browser UI renders API snapshots and submits explicit actions; it does not maintain a second portfolio engine. The [blueprint](BLUEPRINT.md) defines the complete delivered behavior and implementation-independent acceptance criteria.
 
+The [standalone objectives](OBJECTIVES.md) define a broader continuous portfolio-management system. This document describes the current implementation. Completing the objective requires connecting trade recommendations, user decisions and chosen sizes, confirmed portfolio changes, and subsequent take-profit, risk-reduction and hedging recommendations. The current modules provide foundations for that lifecycle; they do not yet implement it in full.
+
 | Layer | Modules | Responsibility |
 |---|---|---|
 | Research | `models`, `scoring`, `calendars`, `engine` | Validate evidence, replay accepted state, derive WATCH, apply lifecycle and confirm eligible sessions |

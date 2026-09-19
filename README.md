@@ -2,7 +2,9 @@
 
 A local macro research and paper-portfolio workbench: discover and challenge themes, review sources and market observations, inspect portfolio consequences, and preserve reproducible decisions.
 
-**[Product blueprint](docs/BLUEPRINT.md)** · **[User guide](docs/user-guide.html)** · **[Release and validation record](docs/RELEASE-v0.6.md)**
+**[Standalone objectives](docs/OBJECTIVES.md)** · **[Product blueprint](docs/BLUEPRINT.md)** · **[User guide](docs/user-guide.html)** · **[Release and validation record](docs/RELEASE-v0.6.md)**
+
+The full objective is continuous portfolio management: understand markets, develop themes, recommend trades, record the user's decisions and chosen sizes, maintain the portfolio, and recommend when to hold, add, take profit, reduce risk, hedge, restructure or exit. v0.6 supplies the research, portfolio and paper-workflow foundation. A complete persistent recommendation and follow-up lifecycle remains to be built. [OBJECTIVES.md](docs/OBJECTIVES.md) defines that purpose without prescribing implementation choices.
 
 ## Start
 

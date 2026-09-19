@@ -5,6 +5,8 @@ Prepared: 19 September 2026
 Canonical repository: https://github.com/AInewbie/MacroTrading  
 Purpose: describe the objectives, decisions and delivered behavior precisely enough for another LLM or engineering team to produce a different implementation.
 
+For a standalone brief that leaves assumptions and implementation choices open, read [OBJECTIVES.md](OBJECTIVES.md). That document defines the full product objective; this blueprint additionally records the reference implementation, delivered scope and remaining work.
+
 ## 1. How to use this blueprint
 
 Treat the product behavior, financial units, state transitions, provenance requirements and acceptance examples as the specification. Python, SQLite, a particular UI framework, file names and module boundaries are choices in the reference implementation, not requirements for a replacement. A new implementation may use a different language, database, hosting model or visual design, provided it preserves these semantics or clearly documents a reviewed change.
@@ -13,25 +15,33 @@ This is a specification of a delivered research and paper-portfolio workbench pl
 
 ## 2. Original objectives
 
-The original ambition was a dynamic multi-asset macro portfolio tool: identify macro themes using economic information, news, research, blogs and alternative data; turn themes into expressions across equities, ETFs, indices, bonds, currencies, commodities and derivatives; understand their combined portfolio consequences; and ultimately support executable brokerage portfolios.
+The original and continuing objective is a comprehensive portfolio-management system: understand the market environment, identify and challenge macro themes, recommend trade expressions, capture the user's decisions and chosen sizes, create and maintain a portfolio, and continually reassess it to recommend holding, adding, taking profit, reducing risk, hedging, restructuring or exiting.
+
+The user explicitly reaffirmed this objective after the v0.6 delivery. The investment process continues throughout the life of the portfolio. Recommendations must use the latest portfolio state, pending intentions, prior decisions and evolving market information. Market assessment, trade implementation, portfolio risk and the decision record form one continuous process.
+
+The scope is multi-asset: economic information, news, research, blogs and other relevant information can generate themes and expressions across equities, ETFs, indices, bonds, currencies, commodities and derivatives, subject to the manager's mandate. The manager retains control of investment decisions and authorized sizes. The standalone [objectives](OBJECTIVES.md) define the required outcomes independently of the current calculation methods, architecture and execution choices.
 
 The user's subsequent requests made these operating needs concrete:
 
 1. Use the GitHub code as the reproducible engine for analysis, not a separate conversational approximation.
 2. Maintain a changing set of macro themes, evidence, catalysts, counterarguments and explicit invalidation conditions.
 3. Produce a clear HTML review for each run, showing what changed, what is unknown and which portfolio decisions need attention.
-4. Integrate research with portfolio risk and expressions while retaining human control over decisions, quantities and execution.
+4. Recommend new trades and subsequent position-management actions, assess the user's chosen quantities against the whole portfolio, and retain human control over authorization and execution.
 5. Keep data, calculations, application orchestration and display separate, with editable assumptions and recoverable state.
 6. Make the dashboard understandable and usable, and document what exists rather than presenting future ideas as completed features.
 7. Preserve unknown or stale information. Do not manufacture market observations, source support, calibrated confidence or an investment edge.
+8. Track recommendations, user intentions, actual implementation and subsequent amendments as distinct but connected records.
+9. Keep the portfolio current and reassess its investment rationale, P&L and risk before recommending profit-taking, risk reduction, hedging or other changes.
 
 The user explicitly stopped an earlier schedule. This implementation therefore performs acquisition and analysis on demand. It does not recreate a scheduled task.
 
 The project is for macro research and investment/risk decision support. An AR/LSTM thesis demonstration or a recruiting portfolio was not an established objective and did not become the governing design direction.
 
-## 3. Final product and scope
+## 3. Delivered v0.6 product and scope
 
 MacroTrading v0.6 is a local, single-user application that combines an evidence ledger, a governed theme lifecycle, transparent research prioritization, reviewed data acquisition, portfolio valuation, scenario analysis, paper orders, evaluation, and reproducible reports.
+
+This is the delivered foundation for the complete objective. A persistent recommendation lifecycle connecting trade ideas, user-sized intentions, implementation and subsequent profit-taking/reduction/hedging recommendations is still required. The objective is broader than the capabilities currently delivered.
 
 | Capability | Delivered behavior | Boundary |
 | --- | --- | --- |
@@ -43,6 +53,8 @@ MacroTrading v0.6 is a local, single-user application that combines an evidence 
 | Portfolio | Funded equity/ETF, dirty-price bond, funded spot FX, option and futures paper valuation | No swaps, FX forwards, full option repricing, tax lots or complete settlement engine |
 | Risk | Currency-consistent cash and position stress; scalar/key-rate DV01, spread, basis and funding scenarios | User-supplied sensitivities and shocks; no estimated covariance or broker margin model |
 | Expressions | User-sized before/after comparison, cost estimates, risk constraints, reviewed paper staging | No portfolio optimizer or automatic mapping from WATCH to quantity |
+| Decision continuity | Decision journal, audit history and separate paper order/fill records | A unified recommendation → user intention → implementation → follow-up history remains to be built |
+| Ongoing management | Updated workspace valuation, research/lifecycle alerts and repeatable scenario assessment | Portfolio-aware hold/add/take-profit/reduce/hedge/restructure/exit recommendations are a core objective and are not yet delivered as a complete workflow |
 | Evaluation | Evidence replay, single-expression backtest and self-financing multi-series allocation backtest with benchmark and ratios | The new portfolio evaluator operates on aligned base-currency indices, not raw derivative contracts |
 | Persistence | Atomic versioned state, immutable saved run records, source archives and a hash-chained audit log | A local administrator can rewrite the database and hashes |
 | Delivery | Thirteen dashboard views, portable HTML/JSON output, Markdown reports and this blueprint | Local loopback application; no multi-user or public hosting included |
@@ -65,6 +77,7 @@ MacroTrading v0.6 is a local, single-user application that combines an evidence 
 | v0.6 evaluation | Added a self-financing portfolio of normalized series | Multi-asset allocation evaluation is supported without misrepresenting it as derivative settlement simulation |
 | Forecasts and risk appetite | Keep statistical forecasts separate from WATCH market confirmation and governance limits | An LSTM output cannot automatically redefine `M` or raise a loss limit |
 | Maintainability | Expand compressed Python/JavaScript into formatted code; add development checks and regression tests | Reviewability improves while runtime remains lightweight |
+| Objective clarification after v0.6 | The user reaffirmed a continuous PM process spanning recommendations, chosen sizes, portfolio updates and subsequent management actions | The delivered workbench is a foundation; the roadmap must close the recommendation/decision/implementation/review loop |
 
 The divergent historical branch `builder/ai-theme-research` at `4a52abe221f1516b3c897166149eddfbe9f553ac` contains unique prototype work. It is preserved by the published archive branch `archive/ai-theme-research-2026-09-19`. A branch being obsolete does not imply its entire history is contained in the release.
 
@@ -106,6 +119,20 @@ The divergent historical branch `builder/ai-theme-research` at `4a52abe221f1516b
 3. Supply timestamped target weights, benchmark, capital, costs and annualization assumptions.
 4. Run the evaluator in isolation from the current evidence ledger and holdings.
 5. Inspect equity, drawdown, attribution, trading/carry costs, benchmark-relative statistics and sample limitations. Export the complete result and provenance.
+
+### 5.5 Continuous portfolio management — target workflow
+
+This journey expresses the full objective and is not a claim that every step is implemented in v0.6:
+
+1. Establish the current portfolio, its market inputs and outstanding decisions or implementation activity.
+2. Update market views and themes; identify both new opportunities and changes affecting existing holdings.
+3. Produce trade or management recommendations that explain the rationale, alternatives, sizing implications, costs and effects on the whole portfolio.
+4. Record the user's acceptance, changes to size, deferral, rejection or decision to hold, together with the reason and review conditions.
+5. Track authorized intentions separately from actual implementation, including partial completion and cancelled actions. Change actual holdings only from confirmed activity or reviewed state corrections.
+6. Update portfolio valuation, P&L, exposures and investment theses, then reassess whether to hold, add, take profit, reduce, hedge, restructure or exit.
+7. Link each follow-up recommendation to the prior decision and current portfolio state, preserving earlier reasoning and outcomes.
+
+The next implementation needs durable recommendation and intention records, links to decisions/orders/fills, portfolio-state references, review conditions, management-action proposals and user disposition history. These are conceptual requirements; [OBJECTIVES.md](OBJECTIVES.md) deliberately leaves their technical representation and calculation methods open.
 
 ## 6. Required conceptual architecture
 
@@ -367,6 +394,16 @@ See `docs/RELEASE-v0.6.md` for measured results, source provenance and execution
 
 ## 16. Remaining work and deliberate exclusions
 
+### Core product work to complete the PM objective
+
+- Connect recommendations, user-selected sizes, pending intentions, implemented trades and successive reviews throughout their lifecycle.
+- Maintain a reliable portfolio state as market observations, instrument economics and implemented activity change, with discrepancies and partial implementation visible.
+- Generate reasoned, portfolio-aware recommendations to hold/add/take profit/reduce/hedge/restructure/exit, and compare their consequences with no action and relevant alternatives.
+- Link reviews to thesis/catalyst changes, P&L, risk, funding/liquidity and the user's review conditions; preserve accepted, modified, deferred and rejected recommendations.
+- Provide a consolidated view of the current portfolio, recommended actions, pending decisions and next reviews, with attribution back to the relevant decision history.
+
+These are part of the intended product, not optional changes to its purpose. The following capabilities and operational boundaries remain separate implementation decisions or further work:
+
 - Broad, entitled equity/bond/futures/options price adapters and corporate-action conventions for the full theme universe.
 - Full-document retrieval and semantic source-independence checking; current AI receives bounded headlines/summaries.
 - Statistical regime/volatility forecasts with separate feature provenance and out-of-sample evaluation.
@@ -380,11 +417,11 @@ These exclusions must not be silently filled with synthetic observations, automa
 
 ## 17. Instructions to another LLM implementing this blueprint
 
-1. Preserve the user's macro research and portfolio decision-support objective; do not convert the task into a model showcase.
+1. Read OBJECTIVES.md first and preserve the complete continuous portfolio-management objective, including trade recommendations, chosen sizes, portfolio updates and management of existing positions.
 2. Propose an architecture with distinct domain, acquisition, orchestration, persistence and presentation boundaries.
 3. Implement the data contracts and units before visual polish. Keep economic sensitivities explicit.
 4. Implement the behavioral acceptance examples as independent tests, including missing/future/stale data and repeated actions.
-5. Build one complete source → review → theme → market → portfolio → report workflow before broadening providers.
+5. Build a complete market → theme → recommendation → user decision and size → implementation → portfolio update → management recommendation loop, with reports and decision history throughout. Identify explicitly which parts exceed v0.6.
 6. Provide a clear dashboard and portable report; show state, provenance, uncertainty and required decisions in context.
 7. Keep model generation outside authorization, accounting and execution paths.
 8. Document every material deviation, especially changes to score meaning, risk appetite, timestamps, settlement or currencies.
