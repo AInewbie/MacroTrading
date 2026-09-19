@@ -66,7 +66,7 @@ MacroTrading v0.6 is a local, single-user application that combines an evidence 
 | Forecasts and risk appetite | Keep statistical forecasts separate from WATCH market confirmation and governance limits | An LSTM output cannot automatically redefine `M` or raise a loss limit |
 | Maintainability | Expand compressed Python/JavaScript into formatted code; add development checks and regression tests | Reviewability improves while runtime remains lightweight |
 
-The divergent historical branch `builder/ai-theme-research` at `4a52abe221f1516b3c897166149eddfbe9f553ac` contains unique prototype work. Preserve that commit through an archive reference before pruning branches. A branch being obsolete does not imply its entire history is contained in the release.
+The divergent historical branch `builder/ai-theme-research` at `4a52abe221f1516b3c897166149eddfbe9f553ac` contains unique prototype work. It is preserved by the published archive branch `archive/ai-theme-research-2026-09-19`. A branch being obsolete does not imply its entire history is contained in the release.
 
 ## 5. Principal user journeys
 

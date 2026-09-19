@@ -38,6 +38,6 @@ The cloud browser could not access the local dashboard in this environment. Desk
 
 ## Preserved history and exclusions
 
-The release retains prior implementation and tutorial history. Preserve the divergent `builder/ai-theme-research` commit before branch cleanup. Prior open PRs are superseded by the consolidated release after merge.
+The release retains prior implementation and tutorial history. The divergent `builder/ai-theme-research` commit is preserved in `archive/ai-theme-research-2026-09-19`. Prior open PRs are superseded by the consolidated release after merge; historical branches are retained.
 
 Live brokerage execution, broad exchange market-data coverage, derivative settlement, full repricing, covariance estimation, optimization and a validated investment edge remain outside this release. See the blueprint for exact boundaries.

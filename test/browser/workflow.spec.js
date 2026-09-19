@@ -32,7 +32,9 @@ test("source review → new theme → market review → portfolio → evaluation
     "New theme accepted unscored",
   );
   await navigate("Market data");
-  await page.getByLabel("Research theme", { exact: true }).selectOption(id);
+  await page
+    .getByRole("combobox", { name: "Research theme", exact: true })
+    .selectOption(id);
   await page.getByRole("button", { name: "Fetch reference history" }).click();
   await page
     .getByRole("button", { name: "Review proxy & accept history" })
@@ -42,6 +44,10 @@ test("source review → new theme → market review → portfolio → evaluation
     .fill("Review synthetic reference fixture and proxy mapping.");
   await page.getByRole("button", { name: "Validate & save" }).click();
   await expect(page.locator("#notice")).toContainText("history accepted");
+  await page.screenshot({
+    path: `test-results/${info.project.name}-market.png`,
+    fullPage: true,
+  });
   await navigate("Portfolio risk");
   await page
     .getByRole("button", { name: "Calculate portfolio impact" })
@@ -52,12 +58,20 @@ test("source review → new theme → market review → portfolio → evaluation
   await expect(
     page.getByText("Pre-trade checks", { exact: true }),
   ).toBeVisible();
+  await page.screenshot({
+    path: `test-results/${info.project.name}-risk.png`,
+    fullPage: true,
+  });
   await navigate("Evaluation");
   await page.getByRole("button", { name: "Load portfolio example" }).click();
   await page.getByRole("button", { name: "Validate & save" }).click();
   await expect(
     page.getByRole("heading", { name: "Portfolio results" }),
   ).toBeVisible();
+  await page.screenshot({
+    path: `test-results/${info.project.name}-evaluation.png`,
+    fullPage: true,
+  });
   await navigate("Run archive");
   const href = await page
     .getByRole("link", { name: "HTML report ↗" })
