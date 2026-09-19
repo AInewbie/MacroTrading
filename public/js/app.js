@@ -841,5 +841,6 @@ document
 window.addEventListener("hashchange", () => {
   render();
   document.querySelector("#sidebar").classList.remove("open");
+  window.scrollTo(0, 0);
 });
 guarded(reload);

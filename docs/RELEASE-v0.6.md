@@ -16,6 +16,8 @@ Local Python suite: 69 tests passed after these changes, including financial exa
 
 All five JavaScript tests pass, including rendering of every original and new view on both fresh and populated state. Python/JavaScript formatters, static checks and all nine JavaScript module syntax checks pass. GitHub Actions runs Python 3.11/3.12, JavaScript checks and desktop/mobile browser workflows. Final CI result is recorded in the release pull request.
 
+The [successful CI run](https://github.com/AInewbie/MacroTrading/actions/runs/35467148569) passed both Python versions and both browser workflows (two browser tests, 12.8 seconds). Captured desktop/mobile market, risk, evaluation and settings screenshots are retained in its artifacts. Screenshot inspection prompted a final navigation adjustment: the expanded sidebar scrolls within the viewport and changing views returns to the top. The latest verification and merge are tracked in [release PR #8](https://github.com/AInewbie/MacroTrading/pull/8).
+
 No paid model request was made. Optional AI generation is validated with structured-output contracts and mocks; it requires the operator's server-side credentials and model selection.
 
 ## Public-data worked example

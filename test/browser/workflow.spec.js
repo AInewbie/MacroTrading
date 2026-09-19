@@ -6,6 +6,13 @@ test("source review → new theme → market review → portfolio → evaluation
 }, info) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
+  async function capture(view) {
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.screenshot({
+      path: `test-results/${info.project.name}-${view}.png`,
+      fullPage: true,
+    });
+  }
   await page.goto("/");
   await expect(
     page.getByRole("heading", { name: "Overview", exact: true }),
@@ -44,10 +51,7 @@ test("source review → new theme → market review → portfolio → evaluation
     .fill("Review synthetic reference fixture and proxy mapping.");
   await page.getByRole("button", { name: "Validate & save" }).click();
   await expect(page.locator("#notice")).toContainText("history accepted");
-  await page.screenshot({
-    path: `test-results/${info.project.name}-market.png`,
-    fullPage: true,
-  });
+  await capture("market");
   await navigate("Portfolio risk");
   await page
     .getByRole("button", { name: "Calculate portfolio impact" })
@@ -58,20 +62,14 @@ test("source review → new theme → market review → portfolio → evaluation
   await expect(
     page.getByText("Pre-trade checks", { exact: true }),
   ).toBeVisible();
-  await page.screenshot({
-    path: `test-results/${info.project.name}-risk.png`,
-    fullPage: true,
-  });
+  await capture("risk");
   await navigate("Evaluation");
   await page.getByRole("button", { name: "Load portfolio example" }).click();
   await page.getByRole("button", { name: "Validate & save" }).click();
   await expect(
     page.getByRole("heading", { name: "Portfolio results" }),
   ).toBeVisible();
-  await page.screenshot({
-    path: `test-results/${info.project.name}-evaluation.png`,
-    fullPage: true,
-  });
+  await capture("evaluation");
   await navigate("Run archive");
   const href = await page
     .getByRole("link", { name: "HTML report ↗" })
@@ -101,8 +99,5 @@ test("source review → new theme → market review → portfolio → evaluation
     () => document.documentElement.scrollWidth > window.innerWidth + 2,
   );
   expect(overflow).toBeFalsy();
-  await page.screenshot({
-    path: `test-results/${info.project.name}-settings.png`,
-    fullPage: true,
-  });
+  await capture("settings");
 });
