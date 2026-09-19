@@ -1,0 +1,53 @@
+name: Record dashboard tutorial
+on:
+  push:
+    branches: ['codex/dashboard-video-tutorial']
+    paths: ['scripts/tutorial/**', '.github/workflows/record-tutorial.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: dashboard-tutorial-recording
+  cancel-in-progress: false
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      OPENAI_API_KEY: ''
+      OPENAI_MODEL: ''
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install recording dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          npm install --no-save --package-lock=false playwright@1.56.1
+          command -v google-chrome
+      - name: Record isolated demo and render MP4
+        run: |
+          export CHROME_BIN="$(command -v google-chrome)"
+          node scripts/tutorial/record.mjs
+          python3 scripts/tutorial/render.py
+      - name: Retain video and verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MacroTrading-dashboard-tutorial
+          path: |
+            tutorial-output/MacroTrading-Dashboard-Tutorial.mp4
+            tutorial-output/MacroTrading-Dashboard-Tutorial.srt
+            tutorial-output/chapters.txt
+            tutorial-output/verification.json
+            tutorial-output/timeline.json
+            tutorial-output/poster.jpg
+            tutorial-output/screenshots/
+          retention-days: 30
+          if-no-files-found: error
